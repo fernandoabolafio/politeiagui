@@ -10,7 +10,7 @@ import userDetail from "./connectors/user";
 import proposalDetail from "./connectors/proposal";
 import censored from "./connectors/censoredProposals";
 import unreviewed from "./connectors/unreviewedProposals";
-import admin from "./connectors/admin";
+// import admin from "./connectors/admin";
 import newProposal from "./connectors/newProposal";
 import editProposal from "./connectors/editProposal";
 
@@ -33,7 +33,7 @@ import UserDetail from "./components/UserDetail";
 import AuthenticatedRoute from "./components/Router/AuthenticatedRoute";
 import AdminAuthenticatedRoute from "./components/Router/AdminAuthenticatedRoute";
 
-import AllVetted from "./components_v2/AllVetted";
+import { AllVetted, AllUnvetted } from "./components_v2/Proposals";
 
 class Routes extends Component {
   render() {
@@ -89,11 +89,7 @@ class Routes extends Component {
           path="/admin/unreviewed"
           component={unreviewed(ProposalListing)}
         />
-        <AdminAuthenticatedRoute
-          path="/admin"
-          component={admin(ProposalListing)}
-          exact
-        />
+        <AdminAuthenticatedRoute path="/admin" component={AllUnvetted} exact />
         <AdminAuthenticatedRoute path="/admin/users" component={UserLookup} />
         <Route path="/user/:userId" component={userDetail(UserDetail)} />
         <Route

@@ -8,6 +8,13 @@ module.exports = function(app) {
       pathRewrite: {
         "/api": ""
       }
+    }),
+    proxy("/graphql", {
+      target: "http://localhost:4000",
+      secure: false,
+      pathRewrite: {
+        "/graphql": ""
+      }
     })
   );
 };

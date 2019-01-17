@@ -14,14 +14,20 @@ import { onLocalStorageChange } from "./actions/app";
 import ModalStack from "./components/Modal/ModalStack";
 import { ONBOARD, CONFIRM_ACTION } from "./components/Modal/modalTypes";
 import { verifyUserPubkey } from "./helpers";
-import ApolloClient from "apollo-boost";
-import { ApolloProvider } from "react-apollo";
 
 /**
  * Apollo Client setup
  */
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "react-apollo";
+import { createHttpLink } from "apollo-link-http";
+const link = createHttpLink({
+  uri: "/graphql",
+  credentials: "include"
+});
+
 const client = new ApolloClient({
-  uri: "http://localhost:4000"
+  link
 });
 
 const store = configureStore();

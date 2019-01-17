@@ -9,9 +9,9 @@ const ProposalsList = ({ data }) => {
         <ul>
           {data &&
             data.proposals &&
-            data.proposals.map(({ name, censorshiprecord }) => (
+            data.proposals.map(({ name, censorshiprecord, username }) => (
               <li>
-                {name} - {censorshiprecord.token}
+                {name} - {censorshiprecord.token} - {username}
               </li>
             ))}
         </ul>

@@ -42,7 +42,8 @@ const typeDefs = gql`
 
   # The "Query" type is the root of all GraphQL queries.
   type Query {
-    proposals: [Proposal]
+    vettedProposals: [Proposal]
+    unvettedProposals: [Proposal]
   }
 `;
 
@@ -50,8 +51,11 @@ const typeDefs = gql`
 // schema.  We'll retrieve books from the "books" array above.
 const resolvers = {
   Query: {
-    proposals: (_root, _args, { dataSources }) =>
-      dataSources.politeiawwwAPI.getVettedProposals()
+    vettedProposals: (_root, _args, { dataSources }) =>
+      dataSources.politeiawwwAPI.getVettedProposals(),
+
+    unvettedProposals: (_root, _args, { dataSources }) =>
+      dataSources.politeiawwwAPI.getUnvettedProposals()
   }
 };
 
@@ -63,7 +67,13 @@ const server = new ApolloServer({
   resolvers,
   dataSources: () => ({
     politeiawwwAPI: new Politeiawww()
-  })
+  }),
+  context: ({ req }) => {
+    // get the user token from the headers
+    // const token = req.headers.authorization || '';
+    const cookie = req.headers.cookie;
+    return { cookie };
+  }
 });
 
 // This `listen` method launches a web-server.  Existing apps
