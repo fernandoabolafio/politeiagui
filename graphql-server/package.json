@@ -1,0 +1,13 @@
+{
+  "name": "graphql-server",
+  "version": "1.0.0",
+  "description": "GraphQl Server",
+  "main": "server.js",
+  "author": "Decred Developers",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-datasource-rest": "^0.2.1",
+    "apollo-server": "^2.3.1",
+    "graphql": "^14.1.1"
+  }
+}

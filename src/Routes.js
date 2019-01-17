@@ -5,7 +5,7 @@ import {
   LoginSignupPage,
   Content as ProposalListing
 } from "./components/snew";
-import vetted from "./connectors/proposals";
+// import vetted from "./connectors/proposals";
 import userDetail from "./connectors/user";
 import proposalDetail from "./connectors/proposal";
 import censored from "./connectors/censoredProposals";
@@ -33,11 +33,13 @@ import UserDetail from "./components/UserDetail";
 import AuthenticatedRoute from "./components/Router/AuthenticatedRoute";
 import AdminAuthenticatedRoute from "./components/Router/AdminAuthenticatedRoute";
 
+import AllVetted from "./components_v2/AllVetted";
+
 class Routes extends Component {
   render() {
     return (
       <Switch>
-        <Route path="/" component={vetted(ProposalListing)} exact />
+        <Route path="/" component={AllVetted} exact />
         <Route path="/login" component={LoginSignupPage} />
         <Route path="/user/login" component={LoginSignupPage} />
         <Route path="/user/logout" component={Logout} />

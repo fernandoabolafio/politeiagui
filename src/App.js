@@ -14,6 +14,15 @@ import { onLocalStorageChange } from "./actions/app";
 import ModalStack from "./components/Modal/ModalStack";
 import { ONBOARD, CONFIRM_ACTION } from "./components/Modal/modalTypes";
 import { verifyUserPubkey } from "./helpers";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "react-apollo";
+
+/**
+ * Apollo Client setup
+ */
+const client = new ApolloClient({
+  uri: "http://localhost:4000"
+});
 
 const store = configureStore();
 
@@ -163,16 +172,18 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Router>
-          <LoaderComponent>
-            <StagingAlert />
-            <SessionExpiresIndicator />
-            <HeaderAlertComponent />
-            <Subreddit>
-              <Routes />
-            </Subreddit>
-          </LoaderComponent>
-        </Router>
+        <ApolloProvider client={client}>
+          <Router>
+            <LoaderComponent>
+              <StagingAlert />
+              <SessionExpiresIndicator />
+              <HeaderAlertComponent />
+              <Subreddit>
+                <Routes />
+              </Subreddit>
+            </LoaderComponent>
+          </Router>
+        </ApolloProvider>
       </Provider>
     );
   }
