@@ -36,12 +36,11 @@ export const requestApiInfo = () => dispatch => {
     .apiInfo()
     .then(response => {
       dispatch(act.RECEIVE_INIT_SESSION(response));
-      if (response.activeusersession) {
-        dispatch(onRequestMe());
-      }
+      return response;
     })
     .catch(error => {
       dispatch(act.RECEIVE_INIT_SESSION(null, error));
+      throw error;
     });
 };
 
@@ -67,11 +66,13 @@ export const onRequestMe = () => (dispatch, getState) => {
             )
           );
         }
+        return response;
       }
     })
     .catch(error => {
       dispatch(act.RECEIVE_ME(null, error));
       clearStateLocalStorage();
+      throw error;
     });
 };
 
@@ -216,6 +217,7 @@ export const onLogin = ({ email, password }) =>
           dispatch(act.SET_PROPOSAL_CREDITS(response.proposalcredits));
         }
         dispatch(closeModal());
+        return response;
       })
       .then(() => dispatch(onRequestMe()))
       .catch(error => {
