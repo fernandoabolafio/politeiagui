@@ -15,4 +15,8 @@ const WhichApp = () => {
   );
 };
 
-ReactDOM.render(<WhichApp />, document.getElementById("root"));
+const targetElement = process.env.REACT_APP_V2
+  ? document.getElementById("root")
+  : document.body;
+
+ReactDOM.render(<WhichApp />, targetElement);
