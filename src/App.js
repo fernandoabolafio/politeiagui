@@ -16,6 +16,11 @@ import { WELCOME_MODAL } from "./components/Modal/modalTypes";
 import { verifyUserPubkey } from "./helpers";
 import Config, { ConfigContext, useConfig } from "./Config";
 
+import "snew-classic-ui/static/css/reddit.css";
+import "font-awesome/css/font-awesome.min.css";
+import "./style/index.css";
+import "./style/theme/index.css";
+
 const store = configureStore();
 
 store.subscribe(

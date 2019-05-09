@@ -1,13 +1,10 @@
 import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom";
-// import "snew-classic-ui/static/css/reddit.css";
-// import "font-awesome/css/font-awesome.min.css";
-// import "./style/index.css";
-// import "./style/theme/index.css";
-import App from "./App";
 
 // lazy load the v2 so it doesn't affect the app bundle size
+// and the styles from old version doesn't affect v2
 const AppV2 = lazy(() => import("./AppV2"));
+const App = lazy(() => import("./App"));
 
 // This is a temporary hook
 const WhichApp = () => {
