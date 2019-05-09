@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 // lazy load the v2 so it doesn't affect the app bundle size
 // and the styles from old version doesn't affect v2
-const AppV2 = lazy(() => import("./AppV2"));
+const AppV2 = lazy(() => import("src/AppV2"));
 const App = lazy(() => import("./App"));
 
 // This is a temporary hook
@@ -15,4 +15,4 @@ const WhichApp = () => {
   );
 };
 
-ReactDOM.render(<WhichApp />, document.body);
+ReactDOM.render(<WhichApp />, document.getElementById("root"));

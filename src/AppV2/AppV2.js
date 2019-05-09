@@ -1,13 +1,15 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Config from "./Config";
+import Config from "src/Config";
 import { defaultLightTheme, useTheme } from "pi-ui";
 import {
   LoginPage,
   SignupPage,
   RequestResetPage,
   ResetPasswordPage
-} from "./Authentication";
+} from "src/Authentication";
+import { ReduxProvider } from "src/redux";
+import Loader from "./Loader";
 
 const Routes = () => (
   <Switch>
@@ -22,9 +24,13 @@ const App = () => {
   useTheme(defaultLightTheme);
   return (
     <Config>
-      <Router>
-        <Routes />
-      </Router>
+      <ReduxProvider>
+        <Loader>
+          <Router>
+            <Routes />
+          </Router>
+        </Loader>
+      </ReduxProvider>
     </Config>
   );
 };

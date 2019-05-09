@@ -1,0 +1,31 @@
+import * as sel from "src/selectors";
+import * as act from "src/actions";
+// import { or } from "src/lib/fp";
+import { useRedux } from "src/redux";
+
+const mapStateToProps = {
+  userPubkey: sel.userPubkey,
+  loggedInAsEmail: sel.loggedInAsEmail,
+  keyMismatch: sel.getKeyMismatch,
+  apiError: sel.apiError,
+  loggedInAsUserId: sel.userid,
+  userCanExecuteActions: sel.userCanExecuteActions,
+  lastLoginTime: sel.lastLoginTimeFromLoginResponse,
+  onboardViewed: sel.onboardViewed,
+  identityImportSuccess: sel.identityImportSuccess,
+  isCMS: sel.isCMS
+};
+
+const mapDispatchToProps = {
+  onInit: act.requestApiInfo,
+  keyMismatchAction: act.keyMismatch,
+  openModal: act.openModal,
+  confirmWithModal: act.confirmWithModal,
+  setOnboardAsViewed: act.setOnboardAsViewed,
+  onLoadDraftProposals: act.onLoadDraftProposals
+};
+
+export function useLoader(ownProps) {
+  const fromRedux = useRedux(ownProps, mapStateToProps, mapDispatchToProps);
+  return fromRedux;
+}

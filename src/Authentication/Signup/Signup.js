@@ -2,13 +2,24 @@ import React, { useState } from "react";
 import { TextInput, Button, H1 } from "pi-ui";
 import { Link } from "react-router-dom";
 import BeforeSignupModal from "./BeforeSignupModal";
+// import { useSignup } from "./hooks";
 
 const Signup = ({ FormWrapper }) => {
+  // const values = useSignup({});
   const [modalOpen, setModalOpen] = useState(false);
   const handleCloseModal = () => setModalOpen(false);
+  const handleUserConfirm = () => {
+    setModalOpen(false);
+    // keep signup process here
+  };
+
   return (
     <>
-      <BeforeSignupModal show={modalOpen} onClose={handleCloseModal} />
+      <BeforeSignupModal
+        show={modalOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleUserConfirm}
+      />
       <FormWrapper
         initialValues={{
           email: "",
@@ -35,7 +46,7 @@ const Signup = ({ FormWrapper }) => {
           handleSubmit
         }) => (
           <Form onSubmit={handleSubmit}>
-            <H1>Sign up</H1>
+            <H1>Create a new account</H1>
             <TextInput
               label="Email"
               name="email"

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, withRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import throttle from "lodash/throttle";
-import configureStore from "./configureStore";
+import configureStore from "./redux/configureStore";
 import { Subreddit } from "./components/snew";
 import HeaderAlert from "./components/HeaderAlert";
 import SessionExpiresIndicator from "./components/SessionExpiresIndicator";
