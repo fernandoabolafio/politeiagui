@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextInput, Button, H1, H2, P } from "pi-ui";
+import { TextInput, Button } from "pi-ui";
 import FormWrapper from "src/componentsv2/UI/FormWrapper";
 import EmailSentMessage from "src/componentsv2/UI/EmailSentMessage";
 
@@ -19,10 +19,10 @@ const RequestForm = () => {
         }, 500);
       }}
     >
-      {({ Form, Actions, values, handleChange, handleBlur, handleSubmit }) =>
+      {({ Form, Title, Actions, values, handleChange, handleBlur, handleSubmit }) =>
         !success ? (
           <Form onSubmit={handleSubmit}>
-            <H1>Reset Password</H1>
+            <Title>Reset Password</Title>
             <TextInput
               label="Email"
               name="email"

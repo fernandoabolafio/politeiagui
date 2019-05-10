@@ -216,7 +216,6 @@ export const onLogin = ({ email, password }) =>
       .then(() => dispatch(onRequestMe()))
       .catch(error => {
         dispatch(act.RECEIVE_LOGIN(null, error));
-        throw error;
       });
   });
 

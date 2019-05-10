@@ -1,25 +1,24 @@
 import React from "react";
-import { TextInput, Button, H1 } from "pi-ui";
+import { TextInput, Button } from "pi-ui";
 import { Link } from "react-router-dom";
 import FormWrapper from "src/componentsv2/UI/FormWrapper";
+import { useLogin } from "./hooks";
 
 const LoginForm = ( ) => {
+  const { onLogin, loading, error } = useLogin();
   return (
     <FormWrapper
       initialValues={{
         email: "",
         password: ""
       }}
-      onSubmit={(values, { setSubmitting }) => {
-        console.log("got here");
-        setTimeout(() => {
-          console.log(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 500);
+      onSubmit={(values) => {
+        onLogin(values);
       }}
     >
       {({
         Form,
+        Title,
         Actions,
         Footer,
         values,
@@ -28,7 +27,7 @@ const LoginForm = ( ) => {
         handleSubmit
       }) => (
         <Form onSubmit={handleSubmit}>
-          <H1>Log in</H1>
+          <Title>Log in</Title>
           <TextInput
             label="Email"
             name="email"
@@ -41,6 +40,9 @@ const LoginForm = ( ) => {
             label="Password"
             type="password"
             name="password"
+            value={values.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
           <Actions>
             <Link
@@ -49,7 +51,7 @@ const LoginForm = ( ) => {
             >
               Reset Password
             </Link>
-            <Button type="submit">Login</Button>
+            <Button kind={loading? "disabled" : "primary"} type="submit">Login</Button>
           </Actions>
           <Footer>
             <Link to="/privacypolicy">Privacy Policy</Link>

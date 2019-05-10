@@ -6,11 +6,11 @@ import PageUserSignup from "./User/Signup";
 import PageUserRequestResetPassword from "./User/RequestResetPassword";
 import PageUserResetPassword from "./User/ResetPassword";
 import PageUserRequestResendVerificationEmail from "./User/RequestResendVerificationEmail";
-
+import PageProposalsPublicList from "./Proposals/PublicList";
 
 const Routes = () => (
   <Switch>
-    <Route path="/" exact redirect="/login" />
+    <Route path="/" exact component={PageProposalsPublicList} />
     <Route path="/user/login" exact component={PageUserLogin} />
     <Route path="/user/signup" exact component={PageUserSignup} />
     <Route

@@ -36,10 +36,10 @@ const RequestVerificationEmailForm = () => {
         }, 500);
       }}
     >
-      {({ Form, Actions, values, handleChange, handleBlur, handleSubmit }) =>
+      {({ Form, Title, Actions, values, handleChange, handleBlur, handleSubmit }) =>
         !success ? (
           <Form onSubmit={handleSubmit}>
-            <H1>Resend Verification Email</H1>
+            <Title>Resend Verification Email</Title>
             <TextInput
               label="Email"
               name="email"

@@ -3,15 +3,14 @@ import * as act from "src/actions";
 import { useRedux } from "src/redux";
 
 const mapStateToProps = {
-  loading: sel.isApiRequestingLogin,
-  error: sel.apiLoginError
+  username: sel.loggedInAsUsername
 };
 
 const mapDispatchToProps = {
-  onLogin: act.onLogin
+  onLogout: act.onLogout
 };
 
-export function useLogin(ownProps) {
+export function useHeader(ownProps) {
   const fromRedux = useRedux(ownProps, mapStateToProps, mapDispatchToProps);
   return fromRedux;
 }

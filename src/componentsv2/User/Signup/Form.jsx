@@ -41,6 +41,7 @@ const SignupForm = () => {
       >
         {({
           Form,
+          Title,
           Actions,
           Footer,
           values,
@@ -49,7 +50,7 @@ const SignupForm = () => {
           handleSubmit
         }) => (
           <Form onSubmit={handleSubmit}>
-            <H1>Create a new account</H1>
+            <Title>Create a new account</Title>
             <TextInput
               label="Email"
               name="email"
@@ -90,7 +91,7 @@ const SignupForm = () => {
             </Actions>
             <Footer>
               <div style={{ flex: 1, textAlign: "right" }}>
-                Already have an account? <Link to="/login">Log in!</Link>
+                Already have an account? <Link to="/user/login">Log in!</Link>
               </div>
             </Footer>
           </Form>

@@ -1,3 +1,7 @@
+.auth-form_title {
+    margin-bottom: 1.7rem;
+}
+
 .auth-form {
     display: flex;
     flex-direction: column;

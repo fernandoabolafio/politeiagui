@@ -27,10 +27,10 @@ const ResetForm = () => {
         }, 500);
       }}
     >
-      {({ Form, Actions, values, handleChange, handleBlur, handleSubmit }) =>
+      {({ Form, Title, Actions, values, handleChange, handleBlur, handleSubmit }) =>
         !success ? (
           <Form onSubmit={handleSubmit}>
-            <H1>Reset Password</H1>
+            <Title>Reset Password</Title>
             <TextInput
               id="password"
               label="Password"
