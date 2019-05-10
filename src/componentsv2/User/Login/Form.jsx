@@ -3,7 +3,7 @@ import { TextInput, Button, H1 } from "pi-ui";
 import { Link } from "react-router-dom";
 import FormWrapper from "src/componentsv2/UI/FormWrapper";
 
-const Form = ( ) => {
+const LoginForm = ( ) => {
   return (
     <FormWrapper
       initialValues={{
@@ -44,7 +44,7 @@ const Form = ( ) => {
           />
           <Actions>
             <Link
-              to="/request-reset-password"
+              to="/user/request-reset-password"
               className="auth-form_buttons_link"
             >
               Reset Password
@@ -54,7 +54,7 @@ const Form = ( ) => {
           <Footer>
             <Link to="/privacypolicy">Privacy Policy</Link>
             <div>
-              Don't have an account? <Link to="/signup">Create here!</Link>
+              Don't have an account? <Link to="/user/signup">Create here!</Link>
             </div>
           </Footer>
         </Form>
@@ -63,4 +63,4 @@ const Form = ( ) => {
   );
 };
 
-export default Form;
+export default LoginForm;

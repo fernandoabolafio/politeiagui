@@ -1,11 +1,28 @@
 import React, { useState } from "react";
-import { TextInput, Button, H1, H2, P } from "pi-ui";
+import { TextInput, Button, H1 } from "pi-ui";
 import FormWrapper from "src/componentsv2/UI/FormWrapper";
 import EmailSentMessage from "src/componentsv2/UI/EmailSentMessage";
+import ModalIdentityWarning from "src/componentsv2/UI/ModalIdentityWarning";
 
-const RequestForm = () => {
+const RequestVerificationEmailForm = () => {
   const [success, setSuccess] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleCloseModal = () => setModalOpen(false);
+  const handleUserConfirm = () => {
+    setModalOpen(false);
+    setSuccess(true);
+    // keep the submission process here
+  };
+
   return (
+    <>
+    <ModalIdentityWarning
+        show={modalOpen}
+        title={"Before you sign up"}
+        confirmMessage="I understand, sign me up"
+        onClose={handleCloseModal}
+        onConfirm={handleUserConfirm}
+      />
     <FormWrapper
       initialValues={{
         email: ""
@@ -15,14 +32,14 @@ const RequestForm = () => {
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           setSubmitting(false);
-          setSuccess(true);
+          setModalOpen(true);
         }, 500);
       }}
     >
       {({ Form, Actions, values, handleChange, handleBlur, handleSubmit }) =>
         !success ? (
           <Form onSubmit={handleSubmit}>
-            <H1>Reset Password</H1>
+            <H1>Resend Verification Email</H1>
             <TextInput
               label="Email"
               name="email"
@@ -31,15 +48,16 @@ const RequestForm = () => {
               onBlur={handleBlur}
             />
             <Actions>
-              <Button type="submit">Reset Password</Button>
+              <Button type="submit">Resend</Button>
             </Actions>
           </Form>
         ) : (
-          <EmailSentMessage title={"Please check your mailbox to reset your password"} />
+          <EmailSentMessage title="Please check your inbox for your verification email" />
         )
       }
     </FormWrapper>
+    </>
   );
 };
 
-export default RequestForm;
+export default RequestVerificationEmailForm;

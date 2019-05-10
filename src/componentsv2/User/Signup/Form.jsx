@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { TextInput, Button, H1 } from "pi-ui";
 import { Link } from "react-router-dom";
-import BeforeSignupModal from "./BeforeSignupModal";
+import ModalIdentityWarning from "src/componentsv2/UI/ModalIdentityWarning";
 import FormWrapper from "src/componentsv2/UI/FormWrapper";
 // import { useSignup } from "./hooks";
 
-const Form = () => {
+const SignupForm = () => {
   // const values = useSignup({});
   const [modalOpen, setModalOpen] = useState(false);
   const handleCloseModal = () => setModalOpen(false);
@@ -16,8 +16,10 @@ const Form = () => {
 
   return (
     <>
-      <BeforeSignupModal
+      <ModalIdentityWarning
         show={modalOpen}
+        title={"Before you sign up"}
+        confirmMessage="I understand, sign me up"
         onClose={handleCloseModal}
         onConfirm={handleUserConfirm}
       />
@@ -81,7 +83,7 @@ const Form = () => {
               onBlur={handleBlur}
             />
             <Actions>
-              <Link to="/resetpassword" className="auth-form_buttons_link">
+              <Link to="/user/resend-verification-email" className="auth-form_buttons_link">
                 Resend verification email
               </Link>
               <Button>Sign up</Button>
@@ -98,4 +100,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default SignupForm;

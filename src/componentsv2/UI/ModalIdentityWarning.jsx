@@ -1,8 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Modal, P, Button } from "pi-ui";
 
-const BeforeSignupModal = ({ onClose, show, onConfirm }) => (
-  <Modal show={show} title="Before you sign up" onClose={onClose}>
+const ModalIdentityWarning = ({ title, onClose, show, onConfirm, confirmMessage }) => (
+  <Modal show={show} title={title} onClose={onClose}>
     <P>
       Politeia will send you a link to verify your email address. You must open
       this link in the same browser. After verifying your email, Politeia will
@@ -19,9 +20,21 @@ const BeforeSignupModal = ({ onClose, show, onConfirm }) => (
       }}
       onClick={onConfirm}
     >
-      I understand, sign me up
+      {confirmMessage}
     </Button>
   </Modal>
 );
 
-export default BeforeSignupModal;
+ModalIdentityWarning.propTypes = {
+    title: PropTypes.string,
+    onClose: PropTypes.func.isRequired,
+    onConfirm: PropTypes.func.isRequired,
+    confirmMessage: PropTypes.string
+}
+
+ModalIdentityWarning.defaultProps = {
+    title: "Before you continue",
+    confirmMessage: "I understand, continue"
+};
+
+export default ModalIdentityWarning;
