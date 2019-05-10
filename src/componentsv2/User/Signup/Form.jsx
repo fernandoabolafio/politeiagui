@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { TextInput, Button, H1 } from "pi-ui";
 import { Link } from "react-router-dom";
 import BeforeSignupModal from "./BeforeSignupModal";
+import FormWrapper from "src/componentsv2/UI/FormWrapper";
 // import { useSignup } from "./hooks";
 
-const Signup = ({ FormWrapper }) => {
+const Form = () => {
   // const values = useSignup({});
   const [modalOpen, setModalOpen] = useState(false);
   const handleCloseModal = () => setModalOpen(false);
@@ -97,4 +98,4 @@ const Signup = ({ FormWrapper }) => {
   );
 };
 
-export default Signup;
+export default Form;

@@ -1,5 +1,6 @@
 import React from "react";
 import { Formik } from "formik";
+import "./styles.css";
 
 const Actions = ({ children, ...props }) => (
   <div className="auth-form_buttons" {...props}>

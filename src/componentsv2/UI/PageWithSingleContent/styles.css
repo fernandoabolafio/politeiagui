@@ -1,0 +1,15 @@
+.contentWrapper {
+    min-width: 50rem;
+    max-width: 75rem;
+    justify-self: center;
+    grid-row: 4 / span 2;
+    grid-column: 1 / -1;
+}
+
+/* SMALL */
+@media screen and (max-width: 768px) {
+    .contentWrapper {
+        justify-self: auto;
+    }
+}
+  

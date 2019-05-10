@@ -1,8 +1,9 @@
 import React from "react";
 import { TextInput, Button, H1 } from "pi-ui";
 import { Link } from "react-router-dom";
+import FormWrapper from "src/componentsv2/UI/FormWrapper";
 
-const Login = ({ FormWrapper }) => {
+const Form = ( ) => {
   return (
     <FormWrapper
       initialValues={{
@@ -62,4 +63,4 @@ const Login = ({ FormWrapper }) => {
   );
 };
 
-export default Login;
+export default Form;

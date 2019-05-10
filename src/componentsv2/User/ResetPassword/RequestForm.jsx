@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { TextInput, Button, H1, H2, P } from "pi-ui";
+import FormWrapper from "src/componentsv2/UI/FormWrapper";
 
 const SuccessContent = ({ email = "example@gmail.com" }) => (
   <>
@@ -19,7 +20,7 @@ const SuccessContent = ({ email = "example@gmail.com" }) => (
   </>
 );
 
-const RequestReset = ({ FormWrapper }) => {
+const RequestForm = () => {
   const [success, setSuccess] = useState(false);
   return (
     <FormWrapper
@@ -58,4 +59,4 @@ const RequestReset = ({ FormWrapper }) => {
   );
 };
 
-export default RequestReset;
+export default RequestForm;
