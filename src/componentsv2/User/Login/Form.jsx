@@ -1,19 +1,39 @@
 import React from "react";
 import { TextInput, Button } from "pi-ui";
 import { Link } from "react-router-dom";
+import * as Yup from "yup";
 import FormWrapper from "src/componentsv2/UI/FormWrapper";
 import { useLogin } from "./hooks";
 
-const LoginForm = ( ) => {
-  const { onLogin, loading, error } = useLogin();
+const loginValidationSchema = ({ minpasswordlength }) =>
+  Yup.object().shape({
+    email: Yup.string()
+      .email("Invalid email")
+      .required("required"),
+    password: Yup.string()
+      .min(minpasswordlength)
+      .required("required")
+  });
+
+const LoginForm = () => {
+  const { onLogin, policy } = useLogin();
   return (
     <FormWrapper
       initialValues={{
         email: "",
         password: ""
       }}
-      onSubmit={(values) => {
-        onLogin(values);
+      loading={!policy}
+      validationSchema={policy && loginValidationSchema(policy)}
+      onSubmit={async (values, { resetForm, setSubmitting, setFieldError }) => {
+        try {
+          await onLogin(values);
+          setSubmitting(false);
+          resetForm();
+        } catch (e) {
+          setSubmitting(false);
+          setFieldError("global", e);
+        }
       }}
     >
       {({
@@ -24,10 +44,14 @@ const LoginForm = ( ) => {
         values,
         handleChange,
         handleBlur,
-        handleSubmit
+        handleSubmit,
+        isSubmitting,
+        ErrorMessage,
+        errors
       }) => (
         <Form onSubmit={handleSubmit}>
           <Title>Log in</Title>
+          {errors && errors.global && <span>{errors.global.toString()}</span>}
           <TextInput
             label="Email"
             name="email"
@@ -35,6 +59,7 @@ const LoginForm = ( ) => {
             onChange={handleChange}
             onBlur={handleBlur}
           />
+          <ErrorMessage name="email" />
           <TextInput
             id="password"
             label="Password"
@@ -44,6 +69,7 @@ const LoginForm = ( ) => {
             onChange={handleChange}
             onBlur={handleBlur}
           />
+          <ErrorMessage name="password" />
           <Actions>
             <Link
               to="/user/request-reset-password"
@@ -51,7 +77,9 @@ const LoginForm = ( ) => {
             >
               Reset Password
             </Link>
-            <Button kind={loading? "disabled" : "primary"} type="submit">Login</Button>
+            <Button kind={isSubmitting ? "disabled" : "primary"} type="submit">
+              Login
+            </Button>
           </Actions>
           <Footer>
             <Link to="/privacypolicy">Privacy Policy</Link>

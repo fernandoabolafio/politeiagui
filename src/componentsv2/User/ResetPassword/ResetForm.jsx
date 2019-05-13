@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextInput, Button, H1, H2, P } from "pi-ui";
+import { TextInput, Button, H2, P } from "pi-ui";
 import FormWrapper from "src/componentsv2/UI/FormWrapper";
 
 const SuccessContent = () => (

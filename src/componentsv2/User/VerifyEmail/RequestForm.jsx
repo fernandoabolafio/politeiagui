@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextInput, Button, H1 } from "pi-ui";
+import { TextInput, Button } from "pi-ui";
 import FormWrapper from "src/componentsv2/UI/FormWrapper";
 import EmailSentMessage from "src/componentsv2/UI/EmailSentMessage";
 import ModalIdentityWarning from "src/componentsv2/UI/ModalIdentityWarning";

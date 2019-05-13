@@ -63,6 +63,7 @@ export const onRequestMe = () => (dispatch, getState) => {
             )
           );
         }
+        return response;
       }
     })
     .catch(error => {
@@ -212,10 +213,12 @@ export const onLogin = ({ email, password }) =>
           dispatch(act.SET_PROPOSAL_CREDITS(response.proposalcredits));
         }
         dispatch(closeModal());
+        return response;
       })
       .then(() => dispatch(onRequestMe()))
       .catch(error => {
         dispatch(act.RECEIVE_LOGIN(null, error));
+        throw error;
       });
   });
 

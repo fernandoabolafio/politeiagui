@@ -1,6 +1,6 @@
 import React from "react";
 import { H1 } from "pi-ui";
-import { Formik } from "formik";
+import { Formik, ErrorMessage } from "formik";
 import "./styles.css";
 
 const Title = ({ children, ...props }) => (
@@ -25,10 +25,14 @@ const Form = ({ children, ...props }) => (
   </form>
 );
 
-const FormWrapper = ({ children, ...props }) => {
-  return (
+const FormWrapper = ({ children, loading, ...props }) => {
+  return loading ? (
+    <span>Loading...</span>
+  ) : (
     <Formik {...props}>
-      {props => children({ ...props, Actions, Footer, Title, Form })}
+      {props =>
+        children({ ...props, Actions, Footer, Title, Form, ErrorMessage })
+      }
     </Formik>
   );
 };

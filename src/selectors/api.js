@@ -21,7 +21,7 @@ export const isApiRequestingUnvettedStatus = getIsApiRequesting(
   "unvettedStatus"
 );
 export const isApiRequestingMe = getIsApiRequesting("me");
-const isApiRequestingPolicy = getIsApiRequesting("policy");
+export const isApiRequestingPolicy = getIsApiRequesting("policy");
 export const isApiRequestingNewUser = getIsApiRequesting("newUser");
 export const isApiRequestingChangePassword = getIsApiRequesting(
   "changePassword"

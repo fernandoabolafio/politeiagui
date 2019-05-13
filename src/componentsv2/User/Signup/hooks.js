@@ -1,13 +1,15 @@
+import { useEffect } from "react";
 import * as sel from "src/selectors";
 import * as act from "src/actions";
 import { or } from "src/lib/fp";
 import { useRedux } from "src/redux";
 
 const mapStateToProps = {
+  policy: sel.policy,
+  loadingPolicy: sel.isApiRequestingPolicy,
   email: sel.email,
   loggedInAsEmail: sel.loggedInAsEmail,
   isAdmin: sel.isAdmin,
-  policy: sel.policy,
   newUserResponse: sel.newUserResponse,
   isApiRequestingLogin: sel.isApiRequestingLogin,
   isApiRequestingNewUser: or(
@@ -23,7 +25,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  onFetchData: act.onGetPolicy,
+  onGetPolicy: act.onGetPolicy,
   onSignup: act.onSignup,
   onSignupConfirm: act.onSignupConfirm,
   onResetSignup: act.onResetSignup
@@ -31,5 +33,12 @@ const mapDispatchToProps = {
 
 export function useSignup(ownProps) {
   const fromRedux = useRedux(ownProps, mapStateToProps, mapDispatchToProps);
+
+  useEffect(() => {
+    if (!fromRedux.policy) {
+      fromRedux.onGetPolicy();
+    }
+  }, []);
+
   return fromRedux;
 }
