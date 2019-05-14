@@ -5,26 +5,16 @@ import * as Yup from "yup";
 import FormWrapper from "src/componentsv2/UI/FormWrapper";
 import { useLogin } from "./hooks";
 
-const loginValidationSchema = ({ minpasswordlength }) =>
-  Yup.object().shape({
-    email: Yup.string()
-      .email("Invalid email")
-      .required("required"),
-    password: Yup.string()
-      .min(minpasswordlength)
-      .required("required")
-  });
-
 const LoginForm = () => {
-  const { onLogin, policy } = useLogin();
+  const { onLogin, validationSchema } = useLogin();
   return (
     <FormWrapper
       initialValues={{
         email: "",
         password: ""
       }}
-      loading={!policy}
-      validationSchema={policy && loginValidationSchema(policy)}
+      loading={!validationSchema}
+      validationSchema={validationSchema}
       onSubmit={async (values, { resetForm, setSubmitting, setFieldError }) => {
         try {
           await onLogin(values);
@@ -47,7 +37,8 @@ const LoginForm = () => {
         handleSubmit,
         isSubmitting,
         ErrorMessage,
-        errors
+        errors,
+        touched
       }) => (
         <Form onSubmit={handleSubmit}>
           <Title>Log in</Title>
@@ -58,8 +49,8 @@ const LoginForm = () => {
             value={values.email}
             onChange={handleChange}
             onBlur={handleBlur}
+            error={touched.email && errors.email}
           />
-          <ErrorMessage name="email" />
           <TextInput
             id="password"
             label="Password"
@@ -68,8 +59,8 @@ const LoginForm = () => {
             value={values.password}
             onChange={handleChange}
             onBlur={handleBlur}
+            error={touched.password && errors.password}
           />
-          <ErrorMessage name="password" />
           <Actions>
             <Link
               to="/user/request-reset-password"
@@ -77,7 +68,7 @@ const LoginForm = () => {
             >
               Reset Password
             </Link>
-            <Button kind={isSubmitting ? "disabled" : "primary"} type="submit">
+            <Button loading={isSubmitting} kind="primary" type="submit">
               Login
             </Button>
           </Actions>

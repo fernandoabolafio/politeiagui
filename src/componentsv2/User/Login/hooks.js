@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as sel from "src/selectors";
 import * as act from "src/actions";
 import { useRedux } from "src/redux";
+import { loginValidationSchema } from "./validation";
 
 const mapStateToProps = {
   policy: sel.policy,
@@ -14,6 +15,7 @@ const mapDispatchToProps = {
 };
 
 export function useLogin(ownProps) {
+  const [validationSchema, setValidationSchema] = useState(null);
   const fromRedux = useRedux(ownProps, mapStateToProps, mapDispatchToProps);
 
   useEffect(() => {
@@ -22,5 +24,12 @@ export function useLogin(ownProps) {
     }
   }, []);
 
-  return fromRedux;
+  useEffect(() => {
+    if (fromRedux.policy) {
+      const schema = loginValidationSchema(fromRedux.policy);
+      setValidationSchema(schema);
+    }
+  }, [fromRedux.policy]);
+
+  return { ...fromRedux, validationSchema };
 }

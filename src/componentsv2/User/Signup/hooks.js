@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as sel from "src/selectors";
 import * as act from "src/actions";
 import { or } from "src/lib/fp";
 import { useRedux } from "src/redux";
+import { signupValidationSchema } from "./validation";
 
 const mapStateToProps = {
   policy: sel.policy,
@@ -32,6 +33,7 @@ const mapDispatchToProps = {
 };
 
 export function useSignup(ownProps) {
+  const [validationSchema, setValidationSchema] = useState(null);
   const fromRedux = useRedux(ownProps, mapStateToProps, mapDispatchToProps);
 
   useEffect(() => {
@@ -40,5 +42,12 @@ export function useSignup(ownProps) {
     }
   }, []);
 
-  return fromRedux;
+  useEffect(() => {
+    if (fromRedux.policy) {
+      const schema = signupValidationSchema(fromRedux.policy);
+      setValidationSchema(schema);
+    }
+  }, [fromRedux.policy]);
+
+  return { ...fromRedux, validationSchema };
 }

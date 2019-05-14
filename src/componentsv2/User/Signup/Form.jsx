@@ -1,55 +1,29 @@
 import React, { useState } from "react";
 import { TextInput, Button } from "pi-ui";
 import { Link } from "react-router-dom";
-import * as Yup from "yup";
 import ModalIdentityWarning from "src/componentsv2/UI/ModalIdentityWarning";
 import FormWrapper from "src/componentsv2/UI/FormWrapper";
 import { useSignup } from "./hooks";
 
-const buildUsernameRegex = supportedChars => {
-  let regex = supportedChars.reduce((str, v) => str + v, "/[");
-  regex += "]*/";
-  console.log(regex);
-  console.log(typeof regex);
-  return regex;
-};
-
-const signupValidationSchema = ({
-  minpasswordlength,
-  minusernamelength,
-  maxusernamelength,
-  usernamesupportedchars
-}) =>
-  Yup.object().shape({
-    email: Yup.string()
-      .email("Invalid email")
-      .required("required"),
-    username: Yup.string()
-      .matches(
-        /^[a-z0-9.,:;-@+()_]*$/,
-        {
-          excludeEmptyString: true
-        },
-        { message: "invalid username" }
-      )
-      .min(minusernamelength)
-      .max(maxusernamelength)
-      .required("required"),
-    password: Yup.string()
-      .min(minpasswordlength)
-      .required("required"),
-    verify_password: Yup.string()
-      .min(minpasswordlength)
-      .required("required")
-  });
-
 const SignupForm = () => {
-  const { policy, onSignup } = useSignup();
+  const { onSignup, validationSchema } = useSignup();
+  const [onModalConfirm, setOnModalConfirm] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const handleCloseModal = () => setModalOpen(false);
-  const handleUserConfirm = () => {
+  console.log(onModalConfirm);
+  const handleUserConfirm = (
+    values,
+    { setSubmitting, setFieldError, resetForm }
+  ) => async () => {
     setModalOpen(false);
-    // keep signup process here
+    try {
+      await onSignup(values);
+      setSubmitting(false);
+      resetForm();
+    } catch (e) {
+      setSubmitting(false);
+      setFieldError("global", e);
+    }
   };
 
   return (
@@ -59,23 +33,20 @@ const SignupForm = () => {
         title={"Before you sign up"}
         confirmMessage="I understand, sign me up"
         onClose={handleCloseModal}
-        onConfirm={handleUserConfirm}
+        onConfirm={onModalConfirm}
       />
       <FormWrapper
         initialValues={{
           email: "",
           username: "",
           password: "",
-          password_verify: ""
+          verify_password: ""
         }}
-        loading={!policy}
-        validationSchema={policy && signupValidationSchema(policy)}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            console.log(JSON.stringify(values, null, 2));
-            setModalOpen(true);
-            setSubmitting(false);
-          }, 500);
+        loading={!validationSchema}
+        validationSchema={validationSchema}
+        onSubmit={(values, actions) => {
+          setModalOpen(true);
+          setOnModalConfirm(handleUserConfirm(values, actions));
         }}
       >
         {({
@@ -87,8 +58,9 @@ const SignupForm = () => {
           handleChange,
           handleBlur,
           handleSubmit,
-          ErrorMessage,
-          errors
+          errors,
+          touched,
+          isSubmitting
         }) => (
           <Form onSubmit={handleSubmit}>
             <Title>Create a new account</Title>
@@ -99,16 +71,16 @@ const SignupForm = () => {
               value={values.email}
               onChange={handleChange}
               onBlur={handleBlur}
+              error={touched.email && errors.email}
             />
-            <ErrorMessage name="email" />
             <TextInput
               label="Username"
               name="username"
               value={values.username}
               onChange={handleChange}
               onBlur={handleBlur}
+              error={touched.username && errors.username}
             />
-            <ErrorMessage name="username" />
             <TextInput
               id="password"
               label="Password"
@@ -117,18 +89,18 @@ const SignupForm = () => {
               value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
+              error={touched.password && errors.password}
             />
-            <ErrorMessage name="usename" />
             <TextInput
               id="verify_password"
               label="Verify Password"
               type="password"
               name="verify_password"
-              value={values.password_verify}
+              value={values.verify_password}
               onChange={handleChange}
               onBlur={handleBlur}
+              error={touched.verify_password && errors.verify_password}
             />
-            <ErrorMessage name="verify_password" />
             <Actions>
               <Link
                 to="/user/resend-verification-email"
@@ -136,7 +108,7 @@ const SignupForm = () => {
               >
                 Resend verification email
               </Link>
-              <Button>Sign up</Button>
+              <Button loading={isSubmitting}>Sign up</Button>
             </Actions>
             <Footer>
               <div style={{ flex: 1, textAlign: "right" }}>
