@@ -11,7 +11,7 @@ export const POLITEIA = {
   ...commonDefaults,
   title: "Politeia",
   recordType: constants.RECORD_TYPE_PROPOSAL,
-  enableAdminInvite: true
+  enableAdminInvite: false
 };
 
 export const CMS = {
