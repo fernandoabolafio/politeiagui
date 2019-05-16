@@ -1,7 +1,6 @@
 import React from "react";
 import { TextInput, Button } from "pi-ui";
 import { Link } from "react-router-dom";
-import * as Yup from "yup";
 import FormWrapper from "src/componentsv2/UI/FormWrapper";
 import { useLogin } from "./hooks";
 
@@ -42,7 +41,9 @@ const LoginForm = () => {
       }) => (
         <Form onSubmit={handleSubmit}>
           <Title>Log in</Title>
-          {errors && errors.global && <span>{errors.global.toString()}</span>}
+          {errors && errors.global && (
+            <ErrorMessage>{errors.global.toString()}</ErrorMessage>
+          )}
           <TextInput
             label="Email"
             name="email"
@@ -73,7 +74,7 @@ const LoginForm = () => {
             </Button>
           </Actions>
           <Footer>
-            <Link to="/privacypolicy">Privacy Policy</Link>
+            <Link to="/user/privacy-policy">Privacy Policy</Link>
             <div>
               Don't have an account? <Link to="/user/signup">Create here!</Link>
             </div>

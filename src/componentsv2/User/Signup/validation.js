@@ -6,12 +6,15 @@ const buildUsernameRegex = supportedChars => {
   return new RegExp(regex);
 };
 
-export const signupValidationSchema = ({
-  minpasswordlength,
-  minusernamelength,
-  maxusernamelength,
-  usernamesupportedchars
-}) =>
+export const signupValidationSchema = (
+  {
+    minpasswordlength,
+    minusernamelength,
+    maxusernamelength,
+    usernamesupportedchars
+  },
+  withVerificationToken
+) =>
   Yup.object().shape({
     email: Yup.string()
       .email("Invalid email")
@@ -32,5 +35,8 @@ export const signupValidationSchema = ({
       .required("required"),
     verify_password: Yup.string()
       .oneOf([Yup.ref("password")], "Passwords must match")
-      .required("required")
+      .required("required"),
+    verificationtoken: withVerificationToken
+      ? Yup.string().required("required")
+      : Yup.string()
   });

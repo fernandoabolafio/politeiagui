@@ -125,6 +125,7 @@ export const onInviteUserConfirm = ({ email }) =>
 
 export const onCreateNewUser = ({ email, username, password }) =>
   withCsrf((dispatch, getState, csrf) => {
+    console.log("iha`");
     dispatch(act.REQUEST_NEW_USER({ email }));
     return api
       .newUser(csrf, email, username, password)

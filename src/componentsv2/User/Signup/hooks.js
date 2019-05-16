@@ -1,34 +1,21 @@
 import { useEffect, useState } from "react";
 import * as sel from "src/selectors";
 import * as act from "src/actions";
-import { or } from "src/lib/fp";
 import { useRedux } from "src/redux";
 import { signupValidationSchema } from "./validation";
+import { useConfig } from "src/Config";
+import { getQueryStringValues } from "src/lib/queryString";
 
 const mapStateToProps = {
   policy: sel.policy,
   loadingPolicy: sel.isApiRequestingPolicy,
-  email: sel.email,
-  loggedInAsEmail: sel.loggedInAsEmail,
-  isAdmin: sel.isAdmin,
-  newUserResponse: sel.newUserResponse,
-  isApiRequestingLogin: sel.isApiRequestingLogin,
-  isApiRequestingNewUser: or(
-    sel.isApiRequestingInit,
-    sel.isApiRequestingNewUser
-  ),
-  isApiRequestingVerifyNewUser: sel.isApiRequestingVerifyNewUser,
-  apiNewUserError: sel.apiNewUserError,
-  apiVerifyNewUserError: sel.apiVerifyNewUserError,
-  isShowingSignupConfirmation: sel.isShowingSignupConfirmation,
-  csrf: sel.csrf,
-  isCMS: sel.isCMS
+  signupResponse: sel.newUserResponse
 };
 
 const mapDispatchToProps = {
   onGetPolicy: act.onGetPolicy,
-  onSignup: act.onSignup,
-  onSignupConfirm: act.onSignupConfirm,
+  onCreateNewUser: act.onCreateNewUser,
+  onCreateNewUseFromAdminInvitation: act.onCreateNewUserCMS,
   onResetSignup: act.onResetSignup
 };
 
@@ -36,18 +23,45 @@ export function useSignup(ownProps) {
   const [validationSchema, setValidationSchema] = useState(null);
   const fromRedux = useRedux(ownProps, mapStateToProps, mapDispatchToProps);
 
+  const { enableAdminInvite } = useConfig();
+
+  // Switch between signup methods accordingly to the config 'enableAdminInvite'
+  const onSignup = enableAdminInvite
+    ? fromRedux.onCreateNewUseFromAdminInvitation
+    : fromRedux.onCreateNewUser;
+
+  // Fetch policy
   useEffect(() => {
     if (!fromRedux.policy) {
       fromRedux.onGetPolicy();
     }
   }, []);
 
+  // Set the validation shcema once the policy has been fetched
   useEffect(() => {
     if (fromRedux.policy) {
-      const schema = signupValidationSchema(fromRedux.policy);
+      const schema = signupValidationSchema(
+        fromRedux.policy,
+        enableAdminInvite
+      );
       setValidationSchema(schema);
     }
   }, [fromRedux.policy]);
 
-  return { ...fromRedux, validationSchema };
+  // Set intial values
+  const { email, verificationtoken } = getQueryStringValues();
+  const initialValues = {
+    email: email || "",
+    verificationtoken: verificationtoken || "",
+    password: "",
+    verify_password: ""
+  };
+
+  return {
+    ...fromRedux,
+    validationSchema,
+    onSignup,
+    enableAdminInvite,
+    initialValues
+  };
 }

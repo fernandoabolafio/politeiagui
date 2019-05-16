@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { H2, P } from "pi-ui";
+import { H2 } from "pi-ui";
 import PageWithSingleContent from "src/componentsv2/UI/PageWithSingleContent";
 
 const PageUserPrivacyPolicy = () => (

@@ -1,6 +1,6 @@
 import React from "react";
-import { H1 } from "pi-ui";
-import { Formik, ErrorMessage } from "formik";
+import { H1, Message } from "pi-ui";
+import { Formik } from "formik";
 import "./styles.css";
 
 const Title = ({ children, ...props }) => (
@@ -19,10 +19,17 @@ const Footer = ({ children, ...props }) => (
     {children}
   </div>
 );
+
 const Form = ({ children, ...props }) => (
   <form className="auth-form" {...props}>
     {children}
   </form>
+);
+
+const ErrorMessage = ({ children, ...props }) => (
+  <Message kind="error" {...props}>
+    {children}
+  </Message>
 );
 
 const FormWrapper = ({ children, loading, ...props }) => {

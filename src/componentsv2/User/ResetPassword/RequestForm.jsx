@@ -11,7 +11,6 @@ const RequestForm = () => {
         email: ""
       }}
       onSubmit={(values, { setSubmitting }) => {
-        console.log("got here");
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           setSubmitting(false);
@@ -19,7 +18,15 @@ const RequestForm = () => {
         }, 500);
       }}
     >
-      {({ Form, Title, Actions, values, handleChange, handleBlur, handleSubmit }) =>
+      {({
+        Form,
+        Title,
+        Actions,
+        values,
+        handleChange,
+        handleBlur,
+        handleSubmit
+      }) =>
         !success ? (
           <Form onSubmit={handleSubmit}>
             <Title>Reset Password</Title>
@@ -35,7 +42,9 @@ const RequestForm = () => {
             </Actions>
           </Form>
         ) : (
-          <EmailSentMessage title={"Please check your mailbox to reset your password"} />
+          <EmailSentMessage
+            title={"Please check your mailbox to reset your password"}
+          />
         )
       }
     </FormWrapper>
