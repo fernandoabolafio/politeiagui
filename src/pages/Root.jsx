@@ -7,6 +7,7 @@ import PageUserRequestResetPassword from "./User/RequestResetPassword";
 import PageUserResetPassword from "./User/ResetPassword";
 import PageUserRequestResendVerificationEmail from "./User/RequestResendVerificationEmail";
 import PageProposalsPublicList from "./Proposals/PublicList";
+import PageUserPrivacyPolicy from "./User/PrivacyPolicy";
 
 const Routes = () => (
   <Switch>
@@ -27,6 +28,11 @@ const Routes = () => (
       path="/user/resend-verification-email"
       exact
       component={PageUserRequestResendVerificationEmail}
+    />
+    <Route
+      path="/user/privacy-policy"
+      exact
+      component={PageUserPrivacyPolicy}
     />
   </Switch>
 );
