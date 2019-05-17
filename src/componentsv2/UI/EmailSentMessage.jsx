@@ -35,4 +35,10 @@ EmailSentMessage.propTypes = {
   bulletPoints: PropTypes.array
 };
 
+EmailSentMessage.defaultProps = {
+  email: "email@example.com",
+  title: "Please check your email inbox",
+  bulletPoints: []
+};
+
 export default EmailSentMessage;
