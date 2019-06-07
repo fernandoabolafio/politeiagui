@@ -6,6 +6,25 @@
     background: none !important;
 }
 
+.customPageDetails {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+
+/* EXTRA SMALL WIDTH */
+@media screen and (max-width: 560px){
+    .customPageDetails {
+        padding-left: 2rem;
+    }
+
+    .customTab {
+        margin-right: 2rem;
+    }
+} 
+
 .narrow {
     grid-column: 5 / 11 !important;
 }
@@ -41,5 +60,14 @@
 
     .customMain {
         margin-top: 0 !important;
+    }
+
+    .customPageDetails {
+        padding-left: 2rem;
+    }
+
+
+    .customTab {
+        margin-right: 2rem;
     }
 } 

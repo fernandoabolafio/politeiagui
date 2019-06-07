@@ -6,7 +6,7 @@ import Logo from "src/assets/pi-logo-light.svg";
 import { useHeader } from "./hooks";
 
 const Header = ({ noBorder }) => {
-  const { username, onLogout } = useHeader();
+  const { user, onLogout } = useHeader();
   return (
     <UIHeader
       className={`${styles.customHeader} ${noBorder ? styles.noBorder : ""}`}
@@ -14,9 +14,11 @@ const Header = ({ noBorder }) => {
       <NavLink to="/">
         <img src={Logo} alt="presentation" />
       </NavLink>
-      {username ? (
+      {user ? (
         <div>
-          <span style={{ marginRight: "10px" }}>{username}</span>
+          <NavLink to={`/user/${user.userid}`} style={{ marginRight: "10px" }}>
+            {user.username}
+          </NavLink>
           <span onClick={onLogout}>Logout</span>
         </div>
       ) : (
