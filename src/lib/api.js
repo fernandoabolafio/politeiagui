@@ -311,6 +311,11 @@ export const verifyUserPayment = () =>
 export const login = (csrf, email, password) =>
   POST("/login", csrf, { email, password: digest(password) }).then(getResponse);
 
+export const loginWithUsername = (csrf, username, password) =>
+  POST("/login", csrf, { username, password: digest(password) }).then(
+    getResponse
+  );
+
 export const likeComment = (csrf, comment) =>
   POST("/comments/like", csrf, comment).then(getResponse);
 
