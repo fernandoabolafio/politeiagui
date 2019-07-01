@@ -311,6 +311,8 @@ export const verifyUserPayment = () =>
 export const login = (csrf, email, password) =>
   POST("/login", csrf, { email, password: digest(password) }).then(getResponse);
 
+// XXXX: this route hasn't been merged into the master of the backend.
+// Pull request: https://github.com/decred/politeia/pull/940
 export const loginWithUsername = (csrf, username, password) =>
   POST("/login", csrf, { username, password: digest(password) }).then(
     getResponse
@@ -336,6 +338,25 @@ export const changePassword = (csrf, currentpassword, newpassword) =>
 
 export const forgottenPasswordRequest = (csrf, email) =>
   POST("/user/password/reset", csrf, { email }).then(getResponse);
+
+// XXXX: this route hasn't been merged into the master of the backend.
+// Pull request: https://github.com/decred/politeia/pull/937
+export const resetPassword = (csrf, username, email) =>
+  POST("/user/password/reset", csrf, { username, email }).then(getResponse);
+
+// XXXX: this route hasn't been merged into the master of the backend.
+// Pull request: https://github.com/decred/politeia/pull/937
+export const verifyResetPassword = (
+  csrf,
+  username,
+  verificationtoken,
+  newpassword
+) =>
+  POST("/user/password/reset/verify", csrf, {
+    username,
+    verificationtoken,
+    newpassword: digest(newpassword)
+  }).then(getResponse);
 
 export const resendVerificationEmailRequest = (csrf, email) =>
   pki
