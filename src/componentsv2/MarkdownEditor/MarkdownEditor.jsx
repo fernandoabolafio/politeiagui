@@ -45,7 +45,7 @@ const MarkdownEditor = ({
           )
         }
         getIcon={getCommandIcon(filesInput)}
-        commands={getCommandsList()}
+        commands={getCommandsList(!!filesInput)}
         onChange={onChange}
         value={value}
       />
