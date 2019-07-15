@@ -17,6 +17,7 @@ const CommentForm = ({ initialValues, onSubmit, history }) => {
       resetForm();
     } catch (e) {
       setSubmitting(false);
+      console.log(e);
       setFieldError("global", e);
     }
   }

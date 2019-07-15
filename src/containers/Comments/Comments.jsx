@@ -4,9 +4,10 @@ import styles from "./Comments.module.css";
 import LoggedInContent from "src/componentsv2/LoggedInContent";
 import CommentForm from "src/componentsv2/CommentForm";
 import { useComment } from "./hooks";
+import CommentsList from "./CommentsList";
 
 const Comments = ({ numOfComments, recordToken, className }) => {
-  const { onSubmitComment } = useComment({ recordToken });
+  const { onSubmitComment, comments } = useComment({ recordToken });
   async function handleSubmitComment(comment) {
     return onSubmitComment({
       comment,
@@ -19,13 +20,16 @@ const Comments = ({ numOfComments, recordToken, className }) => {
       <LoggedInContent>
         <CommentForm onSubmit={handleSubmitComment} />
       </LoggedInContent>
-      <div className={classNames("justify-space-between")}>
+      <div className={classNames("justify-space-between", "margin-top-m")}>
         <H2 className={styles.commentsTitle}>
           Comments{" "}
           <span className={styles.commentsCount}>
             {!!numOfComments && numOfComments}
           </span>
         </H2>
+      </div>
+      <div className="margin-top-m">
+        <CommentsList comments={comments} />
       </div>
     </Card>
   );
