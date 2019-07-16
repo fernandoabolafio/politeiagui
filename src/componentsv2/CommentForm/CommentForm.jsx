@@ -1,12 +1,11 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 import { Formik } from "formik";
-import { Button, Message, BoxTextInput } from "pi-ui";
+import { Button, Message } from "pi-ui";
 import { Row } from "../layout";
 import MarkdownEditor from "src/componentsv2/MarkdownEditor";
 import validationSchema from "./validation";
 
-const CommentForm = ({ initialValues, onSubmit, history }) => {
+const CommentForm = ({ onSubmit, onCommentSubmitted }) => {
   async function handleSubmit(
     values,
     { resetForm, setSubmitting, setFieldError }
@@ -15,9 +14,9 @@ const CommentForm = ({ initialValues, onSubmit, history }) => {
       await onSubmit(values.comment);
       setSubmitting(false);
       resetForm();
+      onCommentSubmitted();
     } catch (e) {
       setSubmitting(false);
-      console.log(e);
       setFieldError("global", e);
     }
   }
@@ -72,4 +71,4 @@ const CommentForm = ({ initialValues, onSubmit, history }) => {
   );
 };
 
-export default withRouter(CommentForm);
+export default CommentForm;

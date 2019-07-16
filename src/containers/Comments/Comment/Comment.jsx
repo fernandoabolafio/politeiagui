@@ -7,6 +7,7 @@ import Join from "src/componentsv2/Join";
 import Link from "src/componentsv2/Link";
 import LoggedInContent from "src/componentsv2/LoggedInContent";
 import CommentForm from "src/componentsv2/CommentForm";
+import Likes from "src/componentsv2/Likes";
 import { useComment } from "../hooks";
 
 // censored: false
@@ -36,7 +37,7 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
     userid,
     parentid
   } = comment;
-  const isThreadParent = parentid === "0";
+  const isThreadParent = parentid === "0" || parentid === 0;
   function handleToggleReplyForm() {
     setShowReplyForm(!showReplyForm);
   }
@@ -44,17 +45,15 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
     setShowReplies(!showReplies);
   }
   async function handleSubmitComment(comment) {
-    console.log("got here!!", comment);
-    console.log({
-      comment,
-      token,
-      parentID: commentid
-    });
     return onSubmitComment({
       comment,
       token,
       parentID: commentid
     });
+  }
+  function handleCommentSubmitted() {
+    setShowReplyForm(false);
+    setShowReplies(true);
   }
   return (
     <div
@@ -71,7 +70,7 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
             {({ timeAgo }) => <Text color="gray">{timeAgo}</Text>}
           </DateTooltip>
         </Join>
-        <span>likes</span>
+        <Likes likes={resultvotes} />
       </div>
       <Markdown className="margin-top-s" body={commentText} />
       <div className="justify-space-between margin-top-s">
@@ -93,7 +92,12 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
           )}
         </div>
       </div>
-      {showReplyForm && <CommentForm onSubmit={handleSubmitComment} />}
+      {showReplyForm && (
+        <CommentForm
+          onSubmit={handleSubmitComment}
+          onCommentSubmitted={handleCommentSubmitted}
+        />
+      )}
       {showReplies && (
         <div className={styles.childrenContainer}>{children}</div>
       )}

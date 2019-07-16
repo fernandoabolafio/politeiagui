@@ -25,12 +25,9 @@ const buildNestedList = comments => {
 
 const CommentsListWrapper = ({ comments }) => {
   const [nestedComments, setNestedComments] = useState([]);
-  console.log(comments);
   useEffect(
     function generateNestedComments() {
-      console.log("here?");
       const result = buildNestedList(comments);
-      console.log("result", result);
       setNestedComments(result);
     },
     [JSON.stringify(comments)]
