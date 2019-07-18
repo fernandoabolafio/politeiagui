@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import Proposal from "src/componentsv2/Proposal";
 import styles from "./Detail.module.css";
 import { useProposal } from "./hooks";
-import Proposal from "src/componentsv2/Proposal";
 import Comments from "src/containers/Comments";
 
 const ProposalDetail = ({ TopBanner, PageDetails, Sidebar, Main, match }) => {
