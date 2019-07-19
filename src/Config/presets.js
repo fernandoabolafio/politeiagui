@@ -14,6 +14,7 @@ export const POLITEIA = {
   paywallContent: "paywall-politeia",
   recordType: constants.RECORD_TYPE_PROPOSAL,
   enableAdminInvite: false,
+  enableCommentVote: true,
   privacyPolicyContent: "privacy-policy",
   testnetGitRepository:
     "https://github.com/decred-proposals/testnet3/tree/master",
@@ -26,6 +27,7 @@ export const CMS = {
   title: "Contractor Management",
   recordType: constants.RECORD_TYPE_INVOICE,
   enableAdminInvite: true,
+  enableCommentVote: false,
   privacyprivacyPolicyContent: "privacy-policy-cms",
   testnetGitRepository: "",
   mainnetGitRepository: ""

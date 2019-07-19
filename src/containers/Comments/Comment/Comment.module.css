@@ -29,3 +29,7 @@
 .reply:hover {
     color: var(--color-primary-dark);
 }
+
+.commentAuthor {
+    font-weight: var(--font-weight-semi-bold);
+}

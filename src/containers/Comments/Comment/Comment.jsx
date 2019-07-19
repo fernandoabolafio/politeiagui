@@ -26,7 +26,12 @@ import { useComment } from "../hooks";
 const Comment = ({ comment, className, children, numOfReplies }) => {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
-  const { onSubmitComment } = useComment();
+  const {
+    onSubmitComment,
+    onLikeComment,
+    getCommentLikeOption,
+    enableCommentVote
+  } = useComment();
   const {
     comment: commentText,
     token,
@@ -55,6 +60,12 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
     setShowReplyForm(false);
     setShowReplies(true);
   }
+  function handleLikeComment() {
+    return onLikeComment(commentid, "1");
+  }
+  function handleDislikeComment() {
+    return onLikeComment(commentid, "-1");
+  }
   return (
     <div
       className={classNames(
@@ -65,12 +76,21 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
     >
       <div className="justify-space-between">
         <Join>
-          <Link to={`/user/${userid}`}>{username}</Link>
+          <Link className={styles.commentAuthor} to={`/user/${userid}`}>
+            {username}
+          </Link>
           <DateTooltip timestamp={timestamp} placement="bottom">
             {({ timeAgo }) => <Text color="gray">{timeAgo}</Text>}
           </DateTooltip>
         </Join>
-        <Likes likes={resultvotes} />
+        {enableCommentVote && (
+          <Likes
+            likes={resultvotes}
+            option={getCommentLikeOption(commentid)}
+            onLike={handleLikeComment}
+            onDislike={handleDislikeComment}
+          />
+        )}
       </div>
       <Markdown className="margin-top-s" body={commentText} />
       <div className="justify-space-between margin-top-s">

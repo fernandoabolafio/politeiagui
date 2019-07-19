@@ -12,6 +12,10 @@
     color: var(--color-gray);
 }
 
+.sortContainer {
+    width: 100px;
+}
+
 @media screen and (max-width: 560px) {
 
     .commentAreaContainer {

@@ -30,7 +30,7 @@ const CommentsListWrapper = ({ comments }) => {
       const result = buildNestedList(comments);
       setNestedComments(result);
     },
-    [JSON.stringify(comments)]
+    [comments]
   );
   return <CommentsList comments={nestedComments} />;
 };

@@ -14,7 +14,7 @@ const CommentForm = ({ onSubmit, onCommentSubmitted }) => {
       await onSubmit(values.comment);
       setSubmitting(false);
       resetForm();
-      onCommentSubmitted();
+      onCommentSubmitted && onCommentSubmitted();
     } catch (e) {
       setSubmitting(false);
       setFieldError("global", e);

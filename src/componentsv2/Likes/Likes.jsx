@@ -1,29 +1,64 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Icon, useTheme, getThemeProperty } from "pi-ui";
-// import LikeIcon from "./assets/like.svg";
+import {
+  Icon,
+  useTheme,
+  Text,
+  getThemeProperty,
+  useHover,
+  classNames
+} from "pi-ui";
+import styles from "./Likes.module.css";
 
-const Likes = ({ likes, onLike, active }) => {
+export const isLiked = action => action === 1 || action === "1";
+export const isDisliked = action => action === -1 || action === "-1";
+
+const Likes = ({ likes, onLike, onDislike, option }) => {
   const theme = useTheme();
+  const [likeRef, isLikeHovered] = useHover();
+  const [dislikeRef, isDislikeHovered] = useHover();
   const defaultColor = getThemeProperty(theme, "color-gray");
-  const activeColor = getThemeProperty(theme, "color-primary-gray");
-  const color = active ? activeColor : defaultColor;
+  const activeColor = getThemeProperty(theme, "color-primary-dark");
+  const liked = isLiked(option);
+  const disliked = isDisliked(option);
+  const likeColor = liked || isLikeHovered ? activeColor : defaultColor;
+  const dislikeColor =
+    disliked || isDislikeHovered ? activeColor : defaultColor;
+
   return (
-    <div>
-      {likes}
-      <Icon
+    <div className="align-center">
+      <button
+        ref={likeRef}
+        className={classNames(styles.likeBtn, "margin-right-s")}
         onClick={onLike}
-        iconColor={color}
-        backgroundColor={color}
-        type="like"
-      />
+      >
+        <Icon
+          onClick={onLike}
+          iconColor={likeColor}
+          backgroundColor={likeColor}
+          type="like"
+        />
+      </button>
+      <button ref={dislikeRef} className={styles.likeBtn} onClick={onDislike}>
+        <Icon
+          onClick={onDislike}
+          iconColor={dislikeColor}
+          backgroundColor={dislikeColor}
+          type="dislike"
+        />
+      </button>
+      <Text size="small" className={styles.likesResult}>
+        {likes}
+      </Text>
     </div>
   );
 };
 
 Likes.propTypes = {
-  active: PropTypes.bool,
-  onLike: PropTypes.func
+  likes: PropTypes.number,
+  option: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  onLike: PropTypes.func,
+  onDislike: PropTypes.func
 };
 
 Likes.defaultProps = {
