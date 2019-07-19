@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, classNames } from "pi-ui";
+import { Text, Icon, classNames } from "pi-ui";
 import styles from "./Comment.module.css";
 import DateTooltip from "src/componentsv2/DateTooltip";
 import Markdown from "src/componentsv2/Markdown";
@@ -30,7 +30,8 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
     onSubmitComment,
     onLikeComment,
     getCommentLikeOption,
-    enableCommentVote
+    enableCommentVote,
+    recordAuthorID
   } = useComment();
   const {
     comment: commentText,
@@ -42,6 +43,7 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
     userid,
     parentid
   } = comment;
+  const isRecordAuthor = recordAuthorID === userid;
   const isThreadParent = parentid === "0" || parentid === 0;
   function handleToggleReplyForm() {
     setShowReplyForm(!showReplyForm);
@@ -76,7 +78,13 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
     >
       <div className="justify-space-between">
         <Join>
-          <Link className={styles.commentAuthor} to={`/user/${userid}`}>
+          <Link
+            className={classNames(
+              styles.commentAuthor,
+              isRecordAuthor && styles.recordAuthor
+            )}
+            to={`/user/${userid}`}
+          >
             {username}
           </Link>
           <DateTooltip timestamp={timestamp} placement="bottom">
@@ -111,6 +119,7 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
             </span>
           )}
         </div>
+        <Icon type="link" />
       </div>
       {showReplyForm && (
         <CommentForm

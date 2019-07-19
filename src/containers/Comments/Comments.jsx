@@ -13,7 +13,12 @@ const commentSortOptions = {
   SORT_BY_NEW: "new"
 };
 
-const Comments = ({ numOfComments, recordToken, className }) => {
+const Comments = ({
+  numOfComments,
+  recordToken,
+  recordAuthorID,
+  className
+}) => {
   const [sortOption, setSortOption] = useState({
     value: commentSortOptions.SORT_BY_TOP
   });
@@ -68,6 +73,7 @@ const Comments = ({ numOfComments, recordToken, className }) => {
           value={{
             onSubmitComment,
             onLikeComment,
+            recordAuthorID,
             ...commentsCtx
           }}
         >

@@ -31,6 +31,17 @@ export const Event = ({ event, timestamp }) => (
   </DateTooltip>
 );
 
+export const RecordToken = ({ token }) => {
+  return (
+    <div className="align-center overflow-hidden">
+      <Icon type="sign" className="margin-right-xs" />
+      <Text id={`proposal-token-${token}`} truncate>
+        {token}
+      </Text>
+    </div>
+  );
+};
+
 export const Title = ({ children, url, ...props }) => (
   <Link to={url} className={styles.title}>
     <H2 {...props}>{children}</H2>
@@ -105,7 +116,8 @@ const RecordWrapper = ({ children, className }) => {
         DownloadRecord,
         Header,
         Subtitle,
-        Status
+        Status,
+        RecordToken
       })}
     </Card>
   );

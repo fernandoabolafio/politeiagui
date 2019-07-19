@@ -21,6 +21,7 @@ const ProposalDetail = ({ TopBanner, PageDetails, Sidebar, Main, match }) => {
       <Main className={styles.customMain}>
         <Proposal proposal={proposal} extended />
         <Comments
+          recordAuthorID={proposal.userid}
           recordToken={proposalToken}
           numOfComments={proposal && proposal.numcomments}
         />

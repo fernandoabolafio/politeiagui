@@ -3,7 +3,15 @@ import React, { useState } from "react";
 import Markdown from "../Markdown";
 import ModalSearchVotes from "../ModalSearchVotes";
 import RecordWrapper from "../RecordWrapper";
-import { getMarkdownContent, getProposalStatusTagProps, getQuorumInVotes, getStatusBarData, getVotesReceived, isAbandonedProposal, isPublicProposal } from "./helpers";
+import {
+  getMarkdownContent,
+  getProposalStatusTagProps,
+  getQuorumInVotes,
+  getStatusBarData,
+  getVotesReceived,
+  isAbandonedProposal,
+  isPublicProposal
+} from "./helpers";
 import { useProposalVoteInfo } from "./hooks";
 import styles from "./Proposal.module.css";
 import VotesCount from "./VotesCount";
@@ -53,7 +61,8 @@ const Proposal = ({ proposal, extended }) => {
           DownloadRecord,
           Header,
           Subtitle,
-          Status
+          Status,
+          RecordToken
         }) => (
           <>
             <Header
@@ -120,9 +129,7 @@ const Proposal = ({ proposal, extended }) => {
             />
             {extended && (
               <Row topMarginSize="s">
-                <Text id={`proposal-token-${proposalToken}`} truncate>
-                  {proposalToken}
-                </Text>
+                <RecordToken token={proposalToken} />
               </Row>
             )}
             {hasVoteStatus && (
