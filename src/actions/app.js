@@ -140,6 +140,8 @@ export const onEditProposal = (
     )
   );
 
+export const onResetUser = () => act.RESET_USER();
+
 export const onEditInvoice = (
   {
     month,

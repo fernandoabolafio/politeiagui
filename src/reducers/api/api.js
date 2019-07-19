@@ -113,6 +113,7 @@ const api = (state = DEFAULT_STATE, action) =>
       receive("verifyNewUser", state, action),
     [act.REQUEST_USER]: () => request("user", state, action),
     [act.RECEIVE_USER]: () => onReceiveUser(state, action),
+    [act.RESET_USER]: () => reset("user", state, action),
     [act.REQUEST_LOGIN]: () => request("login", state, action),
     [act.RECEIVE_LOGIN]: () => receive("login", state, action),
     [act.REQUEST_CHANGE_USERNAME]: () =>
