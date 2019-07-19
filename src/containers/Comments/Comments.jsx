@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Card, H2, classNames } from "pi-ui";
-import Select from "react-select";
 import styles from "./Comments.module.css";
 import LoggedInContent from "src/componentsv2/LoggedInContent";
 import CommentForm from "src/componentsv2/CommentForm";
 import { useComments, CommentContext } from "./hooks";
 import CommentsList from "./CommentsList";
+import CommentLoader from "./Comment/CommentLoader";
 
 const commentSortOptions = {
   SORT_BY_TOP: "top",
@@ -26,9 +26,11 @@ const Comments = ({
     onSubmitComment,
     comments,
     onLikeComment,
+    loading,
     ...commentsCtx
   } = useComments({
-    recordToken
+    recordToken,
+    numOfComments
   });
   async function handleSubmitComment(comment) {
     return onSubmitComment({
@@ -37,9 +39,21 @@ const Comments = ({
       parentID: 0
     });
   }
-  function handleSetSortValue(option) {
-    // console.log(option);
-    setSortOption(option);
+
+  function renderCommentLoaders() {
+    // estimates the number of comments placeholder to be shown while loading
+    // the content from the API. The formula '6 log (0.2 numOfComments)' is an
+    // estimative of how many top level comments exists based on the current
+    // dataset from proposals.decred.org.
+    const numberOfContents =
+      numOfComments < 7
+        ? numOfComments
+        : Math.round(6 * Math.log(0.2 * numOfComments));
+    const contents = [];
+    for (let i = 0; i < numberOfContents; i++) {
+      contents.push(<CommentLoader />);
+    }
+    return contents;
   }
   return (
     <Card className={classNames(styles.commentAreaContainer, className)}>
@@ -53,33 +67,24 @@ const Comments = ({
             {!!numOfComments && numOfComments}
           </span>
         </H2>
-        <div className={styles.sortContainer}>
-          <Select
-            onKeyDown={e => e.keyCode === 8 && e.preventDefault()}
-            isSearchable={false}
-            isClearable={false}
-            escapeClearsValue={false}
-            value={sortOption}
-            onChange={handleSetSortValue}
-            options={Object.values(commentSortOptions).map(op => ({
-              value: op,
-              label: op
-            }))}
-          />
+        <div className={styles.sortContainer}></div>
+      </div>
+      {loading ? (
+        renderCommentLoaders()
+      ) : (
+        <div className="margin-top-m">
+          <CommentContext.Provider
+            value={{
+              onSubmitComment,
+              onLikeComment,
+              recordAuthorID,
+              ...commentsCtx
+            }}
+          >
+            <CommentsList comments={comments} />
+          </CommentContext.Provider>
         </div>
-      </div>
-      <div className="margin-top-m">
-        <CommentContext.Provider
-          value={{
-            onSubmitComment,
-            onLikeComment,
-            recordAuthorID,
-            ...commentsCtx
-          }}
-        >
-          <CommentsList comments={comments} />
-        </CommentContext.Provider>
-      </div>
+      )}
     </Card>
   );
 };

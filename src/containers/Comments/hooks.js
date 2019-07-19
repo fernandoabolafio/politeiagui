@@ -10,7 +10,8 @@ export const useComment = () => useContext(CommentContext);
 const mapStateToProps = {
   email: sel.loggedInAsEmail,
   comments: sel.proposalComments,
-  commentsLikes: sel.commentsLikes
+  commentsLikes: sel.commentsLikes,
+  loading: sel.isApiRequestingComments
 };
 
 const mapDispatchToProps = {
@@ -32,22 +33,25 @@ export function useComments(ownProps) {
   const { enableCommentVote } = useConfig();
 
   const recordToken = ownProps && ownProps.recordToken;
+  const numOfComments = (ownProps && ownProps.numOfComments) || 0;
+  const needsToFetchData = !!recordToken && numOfComments > 0;
+
   useEffect(
     function handleFetchOfComments() {
-      if (recordToken) {
+      if (recordToken && numOfComments > 0) {
         onFetchComments(recordToken);
       }
     },
-    [onFetchComments, recordToken]
+    [onFetchComments, needsToFetchData]
   );
 
   useEffect(
     function handleFetchOfLikes() {
-      if (recordToken && enableCommentVote) {
+      if (needsToFetchData && enableCommentVote) {
         onFetchLikes(recordToken);
       }
     },
-    [onFetchLikes, enableCommentVote, recordToken]
+    [onFetchLikes, enableCommentVote, needsToFetchData]
   );
 
   const onLikeComment = useCallback(

@@ -4,12 +4,13 @@ import Proposal from "src/componentsv2/Proposal";
 import styles from "./Detail.module.css";
 import { useProposal } from "./hooks";
 import Comments from "src/containers/Comments";
+import ProposalLoader from "src/componentsv2/Proposal/ProposalLoader";
 
 const ProposalDetail = ({ TopBanner, PageDetails, Sidebar, Main, match }) => {
   const { proposal, loading } = useProposal({ match });
-  const { censorshiprecord } = proposal || {};
-  const proposalToken = censorshiprecord && censorshiprecord.token;
-  return !!proposal && !loading ? (
+  const proposalToken =
+    proposal && proposal.censorshiprecord && proposal.censorshiprecord.token;
+  return (
     <>
       <TopBanner>
         <PageDetails
@@ -19,15 +20,21 @@ const ProposalDetail = ({ TopBanner, PageDetails, Sidebar, Main, match }) => {
       </TopBanner>
       <Sidebar />
       <Main className={styles.customMain}>
-        <Proposal proposal={proposal} extended />
-        <Comments
-          recordAuthorID={proposal.userid}
-          recordToken={proposalToken}
-          numOfComments={proposal && proposal.numcomments}
-        />
+        {loading || !proposal ? (
+          <ProposalLoader extended />
+        ) : (
+          <Proposal proposal={proposal} extended />
+        )}
+        {proposal && (
+          <Comments
+            recordAuthorID={proposal.userid}
+            recordToken={proposalToken}
+            numOfComments={proposal.numcomments}
+          />
+        )}
       </Main>
     </>
-  ) : null;
+  );
 };
 
 export default withRouter(ProposalDetail);

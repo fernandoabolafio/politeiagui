@@ -10,19 +10,6 @@ import CommentForm from "src/componentsv2/CommentForm";
 import Likes from "src/componentsv2/Likes";
 import { useComment } from "../hooks";
 
-// censored: false
-// comment: "ma comment here!"
-// commentid: "1"
-// parentid: "0"
-// publickey: "86d3f681afd5fd48cc7c087e0b18ca09e0adbc27ae95a68ccddb1aad91a5cded"
-// receipt: "c1ad24f5b9d2784c0c417a70c79a0eeb4203f8687fb08f06bb869288c26f50899fc814b6c13e8a418b9db1a58cbe957a2b323b4b704c21640b5c1bbdbee4de0a"
-// resultvotes: 0
-// signature: "114d83ae6bd7af3696fade050e23e067667fb18947cead6dcbb6f0884948b31010cc61da86de80c0d4544f939ad353109aa78b65632b974b9a5f2d8964c26f07"
-// timestamp: 1563190913
-// token: "dccc6cd34b9475811ced6de630e048ed72ff8db45648535e810e5ad3f638abb0"
-// userid: "82c78293-00df-48bb-9277-514ee9cc1473"
-// username: "pepino"
-
 const Comment = ({ comment, className, children, numOfReplies }) => {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
