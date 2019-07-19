@@ -9,10 +9,12 @@ import LoggedInContent from "src/componentsv2/LoggedInContent";
 import CommentForm from "src/componentsv2/CommentForm";
 import Likes from "src/componentsv2/Likes";
 import { useComment } from "../hooks";
+import { useLoaderContext } from "src/Appv2/Loader";
 
 const Comment = ({ comment, className, children, numOfReplies }) => {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
+  const { initDone, currentUser } = useLoaderContext();
   const {
     onSubmitComment,
     onLikeComment,
@@ -30,6 +32,7 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
     userid,
     parentid
   } = comment;
+  const userLoggedIn = initDone && currentUser;
   const isRecordAuthor = recordAuthorID === userid;
   const isThreadParent = parentid === "0" || parentid === 0;
   function handleToggleReplyForm() {
@@ -80,6 +83,7 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
         </Join>
         {enableCommentVote && (
           <Likes
+            disabled={!userLoggedIn}
             likes={resultvotes}
             option={getCommentLikeOption(commentid)}
             onLike={handleLikeComment}

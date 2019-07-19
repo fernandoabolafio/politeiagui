@@ -13,7 +13,7 @@ import styles from "./Likes.module.css";
 export const isLiked = action => action === 1 || action === "1";
 export const isDisliked = action => action === -1 || action === "-1";
 
-const Likes = ({ likes, onLike, onDislike, option }) => {
+const Likes = ({ likes, onLike, onDislike, option, disabled }) => {
   const theme = useTheme();
   const [likeRef, isLikeHovered] = useHover();
   const [dislikeRef, isDislikeHovered] = useHover();
@@ -21,16 +21,28 @@ const Likes = ({ likes, onLike, onDislike, option }) => {
   const activeColor = getThemeProperty(theme, "color-primary-dark");
   const liked = isLiked(option);
   const disliked = isDisliked(option);
-  const likeColor = liked || isLikeHovered ? activeColor : defaultColor;
+  const likeColor =
+    (liked || isLikeHovered) && !disabled ? activeColor : defaultColor;
   const dislikeColor =
-    disliked || isDislikeHovered ? activeColor : defaultColor;
+    (disliked || isDislikeHovered) && !disabled ? activeColor : defaultColor;
+
+  function handleLike() {
+    if (disabled) return;
+    onLike();
+  }
+
+  function handleDislike() {
+    if (disabled) return;
+    onDislike();
+  }
 
   return (
     <div className="align-center">
       <button
+        disabled
         ref={likeRef}
         className={classNames(styles.likeBtn, "margin-right-s")}
-        onClick={onLike}
+        onClick={handleLike}
       >
         <Icon
           onClick={onLike}
@@ -39,7 +51,12 @@ const Likes = ({ likes, onLike, onDislike, option }) => {
           type="like"
         />
       </button>
-      <button ref={dislikeRef} className={styles.likeBtn} onClick={onDislike}>
+      <button
+        disabled
+        ref={dislikeRef}
+        className={styles.likeBtn}
+        onClick={handleDislike}
+      >
         <Icon
           onClick={onDislike}
           iconColor={dislikeColor}

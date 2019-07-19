@@ -5,6 +5,10 @@
     outline: none;
 }
 
+.likeBtn:disabled {
+    cursor: not-allowed;
+}
+
 .likesResult {
     display: block;
     width: 2rem;

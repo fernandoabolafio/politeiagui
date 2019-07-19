@@ -47,11 +47,11 @@ export function useComments(ownProps) {
 
   useEffect(
     function handleFetchOfLikes() {
-      if (needsToFetchData && enableCommentVote) {
+      if (needsToFetchData && enableCommentVote && email) {
         onFetchLikes(recordToken);
       }
     },
-    [onFetchLikes, enableCommentVote, needsToFetchData]
+    [onFetchLikes, enableCommentVote, needsToFetchData, email]
   );
 
   const onLikeComment = useCallback(

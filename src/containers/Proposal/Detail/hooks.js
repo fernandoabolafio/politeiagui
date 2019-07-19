@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import get from "lodash/fp/get";
 import compose from "lodash/fp/compose";
 import isEqual from "lodash/isEqual";
@@ -38,17 +38,15 @@ export function useProposal(ownProps) {
     onResetProposal,
     onFetchProposalVoteStatus
   } = useRedux(ownProps, mapStateToProps, mapDispatchToProps);
-  const [proposal, setProposal] = useState(null);
 
-  const getProposalFromCache = useCallback(() => {
+  const getProposalFromCache = () => {
     // search in the public proposals
     const proposalFromPublic = publicProposals.find(
       prop => prop.censorshiprecord.token === token
     );
 
     if (proposalFromPublic) {
-      setProposal(proposalFromPublic);
-      return true;
+      return proposalFromPublic;
     }
 
     // search in the unvetted proposals
@@ -57,12 +55,13 @@ export function useProposal(ownProps) {
     );
 
     if (proposalFromUnvetted) {
-      setProposal(proposalFromUnvetted);
-      return true;
+      return proposalFromUnvetted;
     }
 
-    return false;
-  }, [publicProposals, unvettedProposals, token]);
+    return null;
+  };
+
+  const [proposal, setProposal] = useState(getProposalFromCache());
 
   useEffect(
     function resetProposalWhenComponentUnmounts() {
@@ -73,22 +72,13 @@ export function useProposal(ownProps) {
 
   useEffect(
     function fetchProposal() {
-      if (loading || !!proposal || getProposalFromCache()) {
+      if (proposal) {
         return;
       }
-
       onFetchProposal(token);
       onFetchProposalVoteStatus(token);
     },
-    [
-      proposal,
-      token,
-      getProposalFromCache,
-      onFetchProposal,
-      onFetchProposalVoteStatus,
-      onResetProposal,
-      loading
-    ]
+    [proposal, token, onFetchProposal, onFetchProposalVoteStatus]
   );
 
   useEffect(
