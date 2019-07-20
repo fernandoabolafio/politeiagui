@@ -724,6 +724,8 @@ export const isApiRequestingComments = or(
   getIsApiRequesting("invoiceComments")
 );
 
+export const isApiRequestingCommentsLikes = getIsApiRequesting("commentslikes");
+
 // CMS Selectors
 const mode = compose(
   get("mode"),

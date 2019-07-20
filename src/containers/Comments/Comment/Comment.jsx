@@ -20,7 +20,8 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
     onLikeComment,
     getCommentLikeOption,
     enableCommentVote,
-    recordAuthorID
+    recordAuthorID,
+    loadingLikes
   } = useComment();
   const {
     comment: commentText,
@@ -32,7 +33,7 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
     userid,
     parentid
   } = comment;
-  const userLoggedIn = initDone && currentUser;
+  const userLoggedIn = initDone && !!currentUser;
   const isRecordAuthor = recordAuthorID === userid;
   const isThreadParent = parentid === "0" || parentid === 0;
   function handleToggleReplyForm() {
@@ -83,7 +84,7 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
         </Join>
         {enableCommentVote && (
           <Likes
-            disabled={!userLoggedIn}
+            disabled={!userLoggedIn || loadingLikes}
             likes={resultvotes}
             option={getCommentLikeOption(commentid)}
             onLike={handleLikeComment}

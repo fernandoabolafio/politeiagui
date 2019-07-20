@@ -39,7 +39,7 @@ const Likes = ({ likes, onLike, onDislike, option, disabled }) => {
   return (
     <div className="align-center">
       <button
-        disabled
+        disabled={disabled}
         ref={likeRef}
         className={classNames(styles.likeBtn, "margin-right-s")}
         onClick={handleLike}
@@ -52,7 +52,7 @@ const Likes = ({ likes, onLike, onDislike, option, disabled }) => {
         />
       </button>
       <button
-        disabled
+        disabled={disabled}
         ref={dislikeRef}
         className={styles.likeBtn}
         onClick={handleDislike}

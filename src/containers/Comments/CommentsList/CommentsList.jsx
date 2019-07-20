@@ -11,8 +11,6 @@ const getChildren = (comments, commentId) => {
 };
 
 const buildNestedList = comments => {
-  // const filteredComments = comments.filter(comment => comment.parentid === "0");
-  // console.log(filteredComments);
   return comments
     .filter(comment => comment.parentid === "0" || comment.parentid === 0)
     .map(comment => {
