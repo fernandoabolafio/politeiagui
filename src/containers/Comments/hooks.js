@@ -33,6 +33,7 @@ export function useComments(ownProps) {
   } = useRedux(ownProps, mapStateToProps, mapDispatchToProps);
   const { enableCommentVote } = useConfig();
 
+  const userLoggedIn = !!email;
   const recordToken = ownProps && ownProps.recordToken;
   const numOfComments = (ownProps && ownProps.numOfComments) || 0;
   const needsToFetchData = !!recordToken && numOfComments > 0;
@@ -48,11 +49,11 @@ export function useComments(ownProps) {
 
   useEffect(
     function handleFetchOfLikes() {
-      if (needsToFetchData && enableCommentVote && email) {
+      if (needsToFetchData && enableCommentVote && userLoggedIn) {
         onFetchLikes(recordToken);
       }
     },
-    [onFetchLikes, enableCommentVote, needsToFetchData, email]
+    [onFetchLikes, enableCommentVote, needsToFetchData, userLoggedIn]
   );
 
   const onLikeComment = useCallback(
@@ -79,6 +80,7 @@ export function useComments(ownProps) {
     onLikeComment,
     getCommentLikeOption,
     enableCommentVote,
+    userLoggedIn,
     ...fromRedux
   };
 }

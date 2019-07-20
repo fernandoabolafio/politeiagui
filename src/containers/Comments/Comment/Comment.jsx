@@ -9,19 +9,18 @@ import LoggedInContent from "src/componentsv2/LoggedInContent";
 import CommentForm from "src/componentsv2/CommentForm";
 import Likes from "src/componentsv2/Likes";
 import { useComment } from "../hooks";
-import { useLoaderContext } from "src/Appv2/Loader";
 
 const Comment = ({ comment, className, children, numOfReplies }) => {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
-  const { initDone, currentUser } = useLoaderContext();
   const {
     onSubmitComment,
     onLikeComment,
     getCommentLikeOption,
     enableCommentVote,
     recordAuthorID,
-    loadingLikes
+    loadingLikes,
+    userLoggedIn
   } = useComment();
   const {
     comment: commentText,
@@ -33,15 +32,17 @@ const Comment = ({ comment, className, children, numOfReplies }) => {
     userid,
     parentid
   } = comment;
-  const userLoggedIn = initDone && !!currentUser;
+
   const isRecordAuthor = recordAuthorID === userid;
   const isThreadParent = parentid === "0" || parentid === 0;
+
   function handleToggleReplyForm() {
     setShowReplyForm(!showReplyForm);
   }
   function handleToggleReplies() {
     setShowReplies(!showReplies);
   }
+
   async function handleSubmitComment(comment) {
     return onSubmitComment({
       comment,

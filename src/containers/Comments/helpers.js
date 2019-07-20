@@ -39,6 +39,11 @@ export const estimateNumberOfTopLevelComments = totalComments => {
   return Math.round(6 * Math.log(0.2 * totalComments));
 };
 
+/**
+ * Returns a sort function accordingly to the sort option provided
+ * @param {String} sortOption
+ * @returns {Function} sorterFunction
+ */
 export const getSort = sortOption => {
   const mapOptionToSort = {
     [commentSortOptions.SORT_BY_NEW]: orderBy(["timestamp"], ["desc"]),
@@ -50,7 +55,7 @@ export const getSort = sortOption => {
   };
 
   return (
-    mapOptionToSort[sortOption.value] ||
+    mapOptionToSort[sortOption] ||
     mapOptionToSort[commentSortOptions.SORT_BY_TOP]
   );
 };
