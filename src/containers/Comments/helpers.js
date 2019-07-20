@@ -59,3 +59,8 @@ export const getSort = sortOption => {
     mapOptionToSort[commentSortOptions.SORT_BY_TOP]
   );
 };
+
+export const sortComments = (sortOption, comments) => {
+  const sorter = getSort(sortOption);
+  return sorter(comments);
+};

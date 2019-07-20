@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import { Card, H2, classNames } from "pi-ui";
 import styles from "./Comments.module.css";
 import LoggedInContent from "src/componentsv2/LoggedInContent";
@@ -56,20 +56,15 @@ const Comments = ({
 
   useEffect(
     function handleUpdateComments() {
-      const firstUpdate = !state.comments.length;
-      dispatch({
-        type: actions.UPDATE,
-        comments
-      });
-      // Need to sort the comments on the first update
-      if (firstUpdate) {
+      if (!!comments && !!comments.length) {
         dispatch({
-          type: actions.SORT,
+          type: actions.UPDATE,
+          comments,
           sortOption
         });
       }
     },
-    [comments]
+    [comments, sortOption]
   );
 
   function renderCommentLoaders() {
@@ -89,15 +84,17 @@ const Comments = ({
         <H2 className={styles.commentsTitle}>
           Comments{" "}
           <span className={styles.commentsCount}>
-            {!!numOfComments && numOfComments}
+            {state.comments.length || numOfComments}
           </span>
         </H2>
         <div className={styles.sortContainer}>
-          <Select
-            value={createSelectOptionFromSortOption(sortOption)}
-            onChange={handleSetSortOption}
-            options={getSortOptionsForSelect()}
-          />
+          {!!comments && !!comments.length && (
+            <Select
+              value={createSelectOptionFromSortOption(sortOption)}
+              onChange={handleSetSortOption}
+              options={getSortOptionsForSelect()}
+            />
+          )}
         </div>
       </div>
       {loading ? (

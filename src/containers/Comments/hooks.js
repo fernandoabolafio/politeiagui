@@ -19,7 +19,8 @@ const mapDispatchToProps = {
   onSubmitComment: act.onSaveNewCommentV2,
   onFetchComments: act.onFetchProposalComments,
   onFetchLikes: act.onFetchLikedComments,
-  onLikeComment: act.onLikeComment
+  onLikeComment: act.onLikeComment,
+  onResetComments: act.onResetComments
 };
 
 export function useComments(ownProps) {
@@ -29,6 +30,7 @@ export function useComments(ownProps) {
     email,
     onFetchLikes,
     commentsLikes,
+    onResetComments,
     ...fromRedux
   } = useRedux(ownProps, mapStateToProps, mapDispatchToProps);
   const { enableCommentVote } = useConfig();
@@ -43,8 +45,15 @@ export function useComments(ownProps) {
       if (recordToken && numOfComments > 0) {
         onFetchComments(recordToken);
       }
+      return () => onResetComments();
     },
-    [onFetchComments, needsToFetchData]
+    [
+      onFetchComments,
+      onResetComments,
+      needsToFetchData,
+      recordToken,
+      numOfComments
+    ]
   );
 
   useEffect(
@@ -53,7 +62,13 @@ export function useComments(ownProps) {
         onFetchLikes(recordToken);
       }
     },
-    [onFetchLikes, enableCommentVote, needsToFetchData, userLoggedIn]
+    [
+      onFetchLikes,
+      enableCommentVote,
+      needsToFetchData,
+      userLoggedIn,
+      recordToken
+    ]
   );
 
   const onLikeComment = useCallback(

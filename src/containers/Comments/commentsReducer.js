@@ -1,8 +1,8 @@
-import { getSort } from "./helpers";
+import { sortComments } from "./helpers";
 import isEqual from "lodash/isEqual";
 import maxBy from "lodash/maxBy";
 
-export const initialState = { comments: [] };
+export const initialState = { comments: [], sortOption: undefined };
 
 export const actions = {
   SORT: "sort",
@@ -11,28 +11,32 @@ export const actions = {
 
 export const commentsReducer = (state, action) => {
   switch (action.type) {
-    case actions.SORT: {
-      const sorter = getSort(action.sortOption);
-      return { ...state, comments: sorter(state.comments) };
-    }
+    case actions.SORT:
+      return {
+        ...state,
+        comments: sortComments(action.sortOption, state.comments),
+        sortOption: action.sortOption
+      };
 
     case actions.UPDATE: {
-      // first update: simply add the comments into the state
-      if (!state.comments.length) {
+      // Sort option changed: simply add the sorted comments into the state
+      if (action.sortOption !== state.sortOption) {
         return {
           ...state,
-          comments: action.comments
+          sortOption: action.sortOption,
+          comments: sortComments(action.sortOption, action.comments)
         };
       }
-      // new comment added: find the new comment and add it to the state
+
+      // New comment added: find the new comment and add it to the state
       if (action.comments.length > state.comments.length) {
         const addedComment = maxBy(action.comments, c => +c.commentid);
         return {
           ...state,
-          comments: state.comments.concat([addedComment])
+          comments: [addedComment].concat(state.comments)
         };
       }
-      // comment updated: find and update the comments with changes
+      // Comment updated: find and update the comments with changes
       return {
         ...state,
         comments: state.comments.map(comment => {

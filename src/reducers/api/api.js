@@ -145,6 +145,7 @@ const api = (state = DEFAULT_STATE, action) =>
       request("proposalComments", state, action),
     [act.RECEIVE_PROPOSAL_COMMENTS]: () =>
       receive("proposalComments", state, action),
+
     [act.REQUEST_LIKE_COMMENT]: () => request("likeComment", state, action),
     [act.RECEIVE_LIKE_COMMENT]: () => receive("likeComment", state, action),
     [act.REQUEST_CENSOR_COMMENT]: () => request("censorComment", state, action),
@@ -196,6 +197,8 @@ const api = (state = DEFAULT_STATE, action) =>
     [act.RECEIVE_EDIT_INVOICE]: () => receive("editInvoice", state, action),
     [act.REQUEST_EXCHANGE_RATE]: () => request("exchangeRate", state, action),
     [act.RECEIVE_EXCHANGE_RATE]: () => receive("exchangeRate", state, action),
+    [act.RESET_COMMENTS]: () =>
+      resetMultiple(["proposalComments", "invoiceComments"], state),
     // === CMS END ===
     [act.REQUEST_PROPOSAL_PAYWALL_DETAILS]: () =>
       request("proposalPaywallDetails", state, action),

@@ -385,5 +385,7 @@ export const toggleProposalPaymentReceived = bool =>
 export const onEditUserPreferences = preferences => dispatch =>
   dispatch(onEditUser(sel.resolveEditUserValues(preferences)));
 
+export const onResetComments = () => act.RESET_COMMENTS();
+
 // CMS
 export const onResetInviteUser = () => act.RESET_INVITE_USER();

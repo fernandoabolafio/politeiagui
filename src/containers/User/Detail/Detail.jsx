@@ -40,7 +40,6 @@ const UserDetail = ({
     onResetUser,
     validateUUID,
     user,
-    loading,
     isAdmin,
     userId,
     loggedInAsUserId
