@@ -1,11 +1,12 @@
 import React, { useEffect, useReducer } from "react";
-import { Card, H2, classNames } from "pi-ui";
+import { Card, H2, Text, classNames } from "pi-ui";
 import styles from "./Comments.module.css";
 import LoggedInContent from "src/componentsv2/LoggedInContent";
 import CommentForm from "src/componentsv2/CommentForm";
 import { useComments, CommentContext } from "./hooks";
 import CommentsListWrapper from "./CommentsList/CommentsListWrapper";
 import CommentLoader from "./Comment/CommentLoader";
+import Link from "src/componentsv2/Link";
 import Select from "src/componentsv2/Select";
 import useQueryString from "src/hooks/useQueryString";
 import {
@@ -20,6 +21,7 @@ const Comments = ({
   numOfComments,
   recordToken,
   recordAuthorID,
+  threadParentID,
   className
 }) => {
   const [state, dispatch] = useReducer(commentsReducer, initialState);
@@ -32,11 +34,14 @@ const Comments = ({
     comments,
     onLikeComment,
     loading,
+    recordType,
     ...commentsCtx
   } = useComments({
     recordToken,
     numOfComments
   });
+
+  const isSingleThread = !!threadParentID;
 
   function handleSubmitComment(comment) {
     return onSubmitComment({
@@ -68,7 +73,9 @@ const Comments = ({
   );
 
   function renderCommentLoaders() {
-    const numberOfContents = estimateNumberOfTopLevelComments(numOfComments);
+    const numberOfContents = estimateNumberOfTopLevelComments(
+      isSingleThread ? 1 : numOfComments
+    );
     const contents = [];
     for (let i = 0; i < numberOfContents; i++) {
       contents.push(<CommentLoader />);
@@ -77,25 +84,36 @@ const Comments = ({
   }
   return (
     <Card className={classNames(styles.commentAreaContainer, className)}>
-      <LoggedInContent>
-        <CommentForm onSubmit={handleSubmitComment} />
-      </LoggedInContent>
+      {!isSingleThread && (
+        <LoggedInContent>
+          <CommentForm onSubmit={handleSubmitComment} />
+        </LoggedInContent>
+      )}
       <div className={classNames("justify-space-between", "margin-top-m")}>
-        <H2 className={styles.commentsTitle}>
-          Comments{" "}
-          <span className={styles.commentsCount}>
-            {state.comments.length || numOfComments}
-          </span>
-        </H2>
+        {!isSingleThread && (
+          <H2 className={styles.commentsTitle}>
+            Comments{" "}
+            <span className={styles.commentsCount}>
+              {state.comments.length || numOfComments}
+            </span>
+          </H2>
+        )}
         <div className={styles.sortContainer}>
           {!!comments && !!comments.length && (
             <Select
+              isSearchable={false}
               value={createSelectOptionFromSortOption(sortOption)}
               onChange={handleSetSortOption}
               options={getSortOptionsForSelect()}
             />
           )}
         </div>
+        {isSingleThread && (
+          <div className="justify-right">
+            <Text className="margin-right-xs">Single comment thread. </Text>
+            <Link to={`/${recordType}/${recordToken}`}> View all.</Link>
+          </div>
+        )}
       </div>
       {loading ? (
         renderCommentLoaders()
@@ -106,10 +124,16 @@ const Comments = ({
               onSubmitComment,
               onLikeComment,
               recordAuthorID,
+              recordToken,
+              threadParentID,
+              recordType,
               ...commentsCtx
             }}
           >
-            <CommentsListWrapper comments={state.comments} />
+            <CommentsListWrapper
+              threadParentID={threadParentID}
+              comments={state.comments}
+            />
           </CommentContext.Provider>
         </div>
       )}

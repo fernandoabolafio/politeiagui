@@ -33,7 +33,7 @@ export function useComments(ownProps) {
     onResetComments,
     ...fromRedux
   } = useRedux(ownProps, mapStateToProps, mapDispatchToProps);
-  const { enableCommentVote } = useConfig();
+  const { enableCommentVote, recordType } = useConfig();
 
   const userLoggedIn = !!email;
   const recordToken = ownProps && ownProps.recordToken;
@@ -96,6 +96,7 @@ export function useComments(ownProps) {
     getCommentLikeOption,
     enableCommentVote,
     userLoggedIn,
+    recordType,
     ...fromRedux
   };
 }

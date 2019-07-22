@@ -12,6 +12,10 @@ const mapStateToProps = {
     get(["match", "params", "token"]),
     arg(1)
   ),
+  commentID: compose(
+    get(["match", "params", "commentid"]),
+    arg(1)
+  ),
   publicProposals: sel.proposalsWithVoteStatus,
   unvettedProposals: sel.apiUnvettedProposals,
   proposalDetail: sel.proposalWithVoteStatus,
@@ -22,8 +26,11 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   onFetchUser: act.onFetchUser,
   onFetchProposal: act.onFetchProposal,
-  onResetProposal: act.onResetProposal,
   onFetchProposalVoteStatus: act.onFetchProposalVoteStatus
+};
+
+const isEqualProposalToken = (proposal, token) => {
+  return proposal && proposal.censorshiprecord.token === token;
 };
 
 export function useProposal(ownProps) {
@@ -35,14 +42,19 @@ export function useProposal(ownProps) {
     publicProposals,
     unvettedProposals,
     loading,
-    onResetProposal,
-    onFetchProposalVoteStatus
+    onFetchProposalVoteStatus,
+    commentID: threadParentID
   } = useRedux(ownProps, mapStateToProps, mapDispatchToProps);
 
   const getProposalFromCache = () => {
+    // compare to the current cached proposal detail
+    if (isEqualProposalToken(proposalDetail, token)) {
+      return proposalDetail;
+    }
+
     // search in the public proposals
-    const proposalFromPublic = publicProposals.find(
-      prop => prop.censorshiprecord.token === token
+    const proposalFromPublic = publicProposals.find(prop =>
+      isEqualProposalToken(prop, token)
     );
 
     if (proposalFromPublic) {
@@ -50,8 +62,8 @@ export function useProposal(ownProps) {
     }
 
     // search in the unvetted proposals
-    const proposalFromUnvetted = unvettedProposals.find(
-      prop => prop.censorshiprecord.token === token
+    const proposalFromUnvetted = unvettedProposals.find(prop =>
+      isEqualProposalToken(prop, token)
     );
 
     if (proposalFromUnvetted) {
@@ -62,13 +74,6 @@ export function useProposal(ownProps) {
   };
 
   const [proposal, setProposal] = useState(getProposalFromCache());
-
-  useEffect(
-    function resetProposalWhenComponentUnmounts() {
-      return () => onResetProposal();
-    },
-    [onResetProposal]
-  );
 
   useEffect(
     function fetchProposal() {
@@ -83,16 +88,20 @@ export function useProposal(ownProps) {
 
   useEffect(
     function receiveFetchedProposal() {
-      if (!!proposalDetail && !isEqual(proposalDetail, proposal)) {
+      if (
+        !!proposalDetail &&
+        isEqualProposalToken(proposalDetail, token) &&
+        !isEqual(proposalDetail, proposal)
+      ) {
         setProposal(proposalDetail);
       }
     },
-    [proposalDetail, proposal]
+    [token, proposalDetail, proposal]
   );
 
   if (error) {
     throw error;
   }
 
-  return { proposal, loading };
+  return { proposal, loading, threadParentID };
 }

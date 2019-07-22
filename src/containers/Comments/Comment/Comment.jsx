@@ -12,6 +12,7 @@ import Likes from "src/componentsv2/Likes";
 const Comment = ({
   children,
   className,
+  permalink,
   topLevelComment,
   author,
   authorID,
@@ -86,7 +87,9 @@ const Comment = ({
             </span>
           )}
         </div>
-        <Icon type="link" />
+        <Link to={permalink}>
+          <Icon type="link" />
+        </Link>
       </div>
       {children}
     </div>
@@ -95,6 +98,8 @@ const Comment = ({
 
 Comment.propTypes = {
   children: PropTypes.node,
+  className: PropTypes.string,
+  permalink: PropTypes.string,
   topLevelComment: PropTypes.bool,
   author: PropTypes.string,
   authorID: PropTypes.string,

@@ -5,8 +5,6 @@ import { useComment } from "../hooks";
 import Comment from "./Comment";
 
 const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
-  const [showReplyForm, setShowReplyForm] = useState(false);
-  const [showReplies, setShowReplies] = useState(false);
   const {
     onSubmitComment,
     onLikeComment,
@@ -14,7 +12,10 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
     enableCommentVote,
     recordAuthorID,
     loadingLikes,
-    userLoggedIn
+    userLoggedIn,
+    recordToken,
+    recordType,
+    threadParentID
   } = useComment();
   const {
     comment: commentText,
@@ -28,7 +29,10 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
   } = comment;
 
   const isRecordAuthor = recordAuthorID === userid;
-  const isThreadParent = parentid === "0" || parentid === 0;
+  const isThreadParent = +parentid === 0 || +commentid === +threadParentID;
+
+  const [showReplyForm, setShowReplyForm] = useState(false);
+  const [showReplies, setShowReplies] = useState(isThreadParent);
 
   function handleToggleReplyForm() {
     setShowReplyForm(!showReplyForm);
@@ -56,6 +60,7 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
   }
   return (
     <Comment
+      permalink={`/${recordType}/${recordToken}/comments/${commentid}`}
       topLevelComment={isThreadParent}
       author={username}
       authorID={userid}

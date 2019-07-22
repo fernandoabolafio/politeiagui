@@ -7,7 +7,7 @@ import Comments from "src/containers/Comments";
 import ProposalLoader from "src/componentsv2/Proposal/ProposalLoader";
 
 const ProposalDetail = ({ TopBanner, PageDetails, Sidebar, Main, match }) => {
-  const { proposal, loading } = useProposal({ match });
+  const { proposal, loading, threadParentID } = useProposal({ match });
   const proposalToken =
     proposal && proposal.censorshiprecord && proposal.censorshiprecord.token;
   return (
@@ -30,6 +30,7 @@ const ProposalDetail = ({ TopBanner, PageDetails, Sidebar, Main, match }) => {
             recordAuthorID={proposal.userid}
             recordToken={proposalToken}
             numOfComments={proposal.numcomments}
+            threadParentID={threadParentID}
           />
         )}
       </Main>
