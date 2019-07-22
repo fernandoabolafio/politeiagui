@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from "react";
-import { Card, H2, Text, classNames } from "pi-ui";
+import { Card, H2, Text, Message, classNames } from "pi-ui";
 import styles from "./Comments.module.css";
 import LoggedInContent from "src/componentsv2/LoggedInContent";
 import CommentForm from "src/componentsv2/CommentForm";
@@ -22,6 +22,8 @@ const Comments = ({
   recordToken,
   recordAuthorID,
   threadParentID,
+  readOnly,
+  readOnlyReason,
   className
 }) => {
   const [state, dispatch] = useReducer(commentsReducer, initialState);
@@ -78,16 +80,21 @@ const Comments = ({
     );
     const contents = [];
     for (let i = 0; i < numberOfContents; i++) {
-      contents.push(<CommentLoader />);
+      contents.push(<CommentLoader key={`comment-loader-${i}`} />);
     }
     return contents;
   }
   return (
     <Card className={classNames(styles.commentAreaContainer, className)}>
-      {!isSingleThread && (
+      {!isSingleThread && !readOnly && (
         <LoggedInContent>
           <CommentForm onSubmit={handleSubmitComment} />
         </LoggedInContent>
+      )}
+      {readOnly && (
+        <Message kind="blocked" title={"Comments are not allowed"}>
+          {readOnlyReason}
+        </Message>
       )}
       <div className={classNames("justify-space-between", "margin-top-m")}>
         {!isSingleThread && (
@@ -127,6 +134,7 @@ const Comments = ({
               recordToken,
               threadParentID,
               recordType,
+              readOnly,
               ...commentsCtx
             }}
           >

@@ -15,7 +15,8 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
     userLoggedIn,
     recordToken,
     recordType,
-    threadParentID
+    threadParentID,
+    readOnly
   } = useComment();
   const {
     comment: commentText,
@@ -67,7 +68,8 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
       createdAt={timestamp}
       highlightAuthor={isRecordAuthor}
       disableLikes={!enableCommentVote}
-      disableLikesClick={!userLoggedIn || loadingLikes}
+      disableLikesClick={!userLoggedIn || loadingLikes || readOnly}
+      disableReply={readOnly}
       likesCount={resultvotes}
       likeOption={getCommentLikeOption(commentid)}
       onLike={handleLikeComment}
