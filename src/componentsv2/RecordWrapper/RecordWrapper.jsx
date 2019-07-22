@@ -90,7 +90,7 @@ export const GithubLink = ({ token }) => {
   );
 };
 
-export const CommentsLink = ({ numOfComments, url = "#" }) => (
+export const CommentsLink = ({ numOfComments, url }) => (
   <Link to={url} gray className={styles.commentsLink}>
     <Icon type="discuss" className="margin-right-s" />
     <span>{numOfComments}</span>

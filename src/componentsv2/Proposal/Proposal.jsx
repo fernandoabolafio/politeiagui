@@ -157,7 +157,10 @@ const Proposal = ({ proposal, extended }) => {
             )}
             {(isPublic || isAbandoned) && (
               <Row justify="space-between">
-                <CommentsLink numOfComments={numcomments} />
+                <CommentsLink
+                  numOfComments={numcomments}
+                  url={`/proposal/${proposalToken}`}
+                />
                 <GithubLink token={proposalToken} />
               </Row>
             )}
