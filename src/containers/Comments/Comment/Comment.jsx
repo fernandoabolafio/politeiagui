@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import { Text, Icon, classNames } from "pi-ui";
 import styles from "./Comment.module.css";
 import DateTooltip from "src/componentsv2/DateTooltip";
@@ -6,125 +7,111 @@ import Markdown from "src/componentsv2/Markdown";
 import Join from "src/componentsv2/Join";
 import Link from "src/componentsv2/Link";
 import LoggedInContent from "src/componentsv2/LoggedInContent";
-import CommentForm from "src/componentsv2/CommentForm";
 import Likes from "src/componentsv2/Likes";
-import { useComment } from "../hooks";
 
-const Comment = ({ comment, className, children, numOfReplies }) => {
-  const [showReplyForm, setShowReplyForm] = useState(false);
-  const [showReplies, setShowReplies] = useState(false);
-  const {
-    onSubmitComment,
-    onLikeComment,
-    getCommentLikeOption,
-    enableCommentVote,
-    recordAuthorID,
-    loadingLikes,
-    userLoggedIn
-  } = useComment();
-  const {
-    comment: commentText,
-    token,
-    commentid,
-    resultvotes,
-    timestamp,
-    username,
-    userid,
-    parentid
-  } = comment;
-
-  const isRecordAuthor = recordAuthorID === userid;
-  const isThreadParent = parentid === "0" || parentid === 0;
-
-  function handleToggleReplyForm() {
-    setShowReplyForm(!showReplyForm);
-  }
-  function handleToggleReplies() {
-    setShowReplies(!showReplies);
-  }
-
-  async function handleSubmitComment(comment) {
-    return onSubmitComment({
-      comment,
-      token,
-      parentID: commentid
-    });
-  }
-  function handleCommentSubmitted() {
-    setShowReplyForm(false);
-    setShowReplies(true);
-  }
-  function handleLikeComment() {
-    return onLikeComment(commentid, "1");
-  }
-  function handleDislikeComment() {
-    return onLikeComment(commentid, "-1");
-  }
+const Comment = ({
+  children,
+  className,
+  topLevelComment,
+  author,
+  authorID,
+  createdAt,
+  highlightAuthor,
+  likesCount,
+  likeOption,
+  disableLikes,
+  disableLikesClick,
+  onLike,
+  onDislike,
+  commentBody,
+  showReplies,
+  disableReply,
+  onClickReply,
+  onClickShowReplies,
+  numOfReplies,
+  ...props
+}) => {
   return (
     <div
       className={classNames(
         styles.commentWrapper,
-        !isThreadParent && styles.withLeftPadding,
+        !topLevelComment && styles.withLeftPadding,
         className
       )}
+      {...props}
     >
       <div className="justify-space-between">
         <Join>
           <Link
             className={classNames(
               styles.commentAuthor,
-              isRecordAuthor && styles.recordAuthor
+              highlightAuthor && styles.recordAuthor
             )}
-            to={`/user/${userid}`}
+            to={`/user/${authorID}`}
           >
-            {username}
+            {author}
           </Link>
-          <DateTooltip timestamp={timestamp} placement="bottom">
+          <DateTooltip timestamp={createdAt} placement="bottom">
             {({ timeAgo }) => <Text color="gray">{timeAgo}</Text>}
           </DateTooltip>
         </Join>
-        {enableCommentVote && (
+        {!disableLikes && (
           <Likes
-            disabled={!userLoggedIn || loadingLikes}
-            likes={resultvotes}
-            option={getCommentLikeOption(commentid)}
-            onLike={handleLikeComment}
-            onDislike={handleDislikeComment}
+            disabled={disableLikesClick}
+            likes={likesCount}
+            option={likeOption}
+            onLike={onLike}
+            onDislike={onDislike}
           />
         )}
       </div>
-      <Markdown className="margin-top-s" body={commentText} />
+      <Markdown className="margin-top-s" body={commentBody} />
       <div className="justify-space-between margin-top-s">
         <div className="justify-left">
-          <LoggedInContent>
-            <Text
-              weight="semibold"
-              color="gray"
-              className={styles.reply}
-              onClick={handleToggleReplyForm}
-            >
-              Reply
-            </Text>
-          </LoggedInContent>
+          {!disableReply && (
+            <LoggedInContent>
+              <Text
+                weight="semibold"
+                color="gray"
+                className={styles.reply}
+                onClick={onClickReply}
+              >
+                Reply
+              </Text>
+            </LoggedInContent>
+          )}
           {numOfReplies > 0 && (
-            <span className={styles.showReplies} onClick={handleToggleReplies}>
+            <span className={styles.showReplies} onClick={onClickShowReplies}>
               {showReplies ? "-" : `+${numOfReplies}`}
             </span>
           )}
         </div>
         <Icon type="link" />
       </div>
-      {showReplyForm && (
-        <CommentForm
-          onSubmit={handleSubmitComment}
-          onCommentSubmitted={handleCommentSubmitted}
-        />
-      )}
-      {showReplies && (
-        <div className={styles.childrenContainer}>{children}</div>
-      )}
+      {children}
     </div>
   );
+};
+
+Comment.propTypes = {
+  children: PropTypes.node,
+  topLevelComment: PropTypes.bool,
+  author: PropTypes.string,
+  authorID: PropTypes.string,
+  createdAt: PropTypes.number,
+  highlightAuthor: PropTypes.bool,
+  disableLikes: PropTypes.bool,
+  likesCount: PropTypes.number,
+  likeOption: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  disableLikesClick: PropTypes.bool,
+  onLike: PropTypes.func,
+  onDislike: PropTypes.func,
+  commentBody: PropTypes.string,
+  showReplies: PropTypes.bool,
+  disableReply: PropTypes.bool,
+  onClickReply: PropTypes.func,
+  onClickShowReplies: PropTypes.func,
+  numOfReplies: PropTypes.number
 };
 
 export default Comment;

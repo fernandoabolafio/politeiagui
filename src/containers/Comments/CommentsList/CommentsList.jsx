@@ -1,48 +1,16 @@
-import React, { useEffect, useState } from "react";
-import Comment from "../Comment";
-
-const getChildren = (comments, commentId) => {
-  return (comments.filter(comment => comment.parentid === commentId) || []).map(
-    comment => ({
-      ...comment,
-      children: getChildren(comments, comment.commentid)
-    })
-  );
-};
-
-const buildNestedList = comments => {
-  return comments
-    .filter(comment => comment.parentid === "0" || comment.parentid === 0)
-    .map(comment => {
-      return {
-        ...comment,
-        children: getChildren(comments, comment.commentid)
-      };
-    });
-};
-
-const CommentsListWrapper = ({ comments }) => {
-  const [nestedComments, setNestedComments] = useState([]);
-  useEffect(
-    function generateNestedComments() {
-      const result = buildNestedList(comments);
-      setNestedComments(result);
-    },
-    [comments]
-  );
-  return <CommentsList comments={nestedComments} />;
-};
+import React from "react";
+import CommentWrapper from "../Comment/CommentWrapper";
 
 const CommentsList = ({ comments }) => {
   return comments.map(comment => (
-    <Comment
+    <CommentWrapper
       key={`comment-${comment.commentid}`}
       comment={comment}
-      numOfReplies={comment.children.length}
+      numOfReplies={(comment.children && comment.children.length) || 0}
     >
       <CommentsList comments={comment.children} />
-    </Comment>
+    </CommentWrapper>
   ));
 };
 
-export default CommentsListWrapper;
+export default CommentsList;

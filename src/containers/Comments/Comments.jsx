@@ -4,7 +4,7 @@ import styles from "./Comments.module.css";
 import LoggedInContent from "src/componentsv2/LoggedInContent";
 import CommentForm from "src/componentsv2/CommentForm";
 import { useComments, CommentContext } from "./hooks";
-import CommentsList from "./CommentsList";
+import CommentsListWrapper from "./CommentsList/CommentsListWrapper";
 import CommentLoader from "./Comment/CommentLoader";
 import Select from "src/componentsv2/Select";
 import useQueryString from "src/hooks/useQueryString";
@@ -109,7 +109,7 @@ const Comments = ({
               ...commentsCtx
             }}
           >
-            <CommentsList comments={state.comments} />
+            <CommentsListWrapper comments={state.comments} />
           </CommentContext.Provider>
         </div>
       )}
