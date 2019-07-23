@@ -16,7 +16,7 @@ export const getCommentBlockedReason = proposal => {
     return "This proposal has been abandoned. New comments and comment votes are not allowed.";
   }
 
-  if (proposal.voteStatus.status !== PROPOSAL_VOTING_FINISHED) {
+  if (proposal.voteStatus.status === PROPOSAL_VOTING_FINISHED) {
     return "Voting has finished for this proposal. New comments and comment votes are not allowed.";
   }
 
