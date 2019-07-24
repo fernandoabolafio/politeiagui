@@ -5,7 +5,7 @@ import { Row } from "../layout";
 import MarkdownEditor from "src/componentsv2/MarkdownEditor";
 import validationSchema from "./validation";
 
-const CommentForm = ({ onSubmit, onCommentSubmitted }) => {
+const CommentForm = ({ onSubmit, onCommentSubmitted, disableSubmit }) => {
   async function handleSubmit(
     values,
     { resetForm, setSubmitting, setFieldError }
@@ -58,7 +58,7 @@ const CommentForm = ({ onSubmit, onCommentSubmitted }) => {
             <Row justify="right" topMarginSize="s">
               <Button
                 type="submit"
-                kind={!isValid ? "disabled" : "primary"}
+                kind={!isValid || disableSubmit ? "disabled" : "primary"}
                 loading={isSubmitting}
               >
                 Add comment

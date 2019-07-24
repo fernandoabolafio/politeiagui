@@ -16,7 +16,8 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
     recordToken,
     recordType,
     threadParentID,
-    readOnly
+    readOnly,
+    identityError
   } = useComment();
   const {
     comment: commentText,
@@ -53,7 +54,7 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
     setShowReplyForm(false);
     setShowReplies(true);
   }
-  function handleLikeComment() {
+  async function handleLikeComment() {
     return onLikeComment(commentid, "1");
   }
   function handleDislikeComment() {
@@ -68,8 +69,10 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
       createdAt={timestamp}
       highlightAuthor={isRecordAuthor}
       disableLikes={!enableCommentVote}
-      disableLikesClick={!userLoggedIn || loadingLikes || readOnly}
-      disableReply={readOnly}
+      disableLikesClick={
+        !userLoggedIn || loadingLikes || readOnly || identityError
+      }
+      disableReply={readOnly || !!identityError}
       likesCount={resultvotes}
       likeOption={getCommentLikeOption(commentid)}
       onLike={handleLikeComment}

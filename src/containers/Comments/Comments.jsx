@@ -15,6 +15,8 @@ import {
   createSelectOptionFromSortOption,
   commentSortOptions
 } from "./helpers";
+import useIdentity from "src/hooks/useIdentity";
+import { IdentityMessageError } from "src/componentsv2/IdentityErrorIndicators";
 import { commentsReducer, initialState, actions } from "./commentsReducer";
 
 const Comments = ({
@@ -26,6 +28,7 @@ const Comments = ({
   readOnlyReason,
   className
 }) => {
+  const [, identityError] = useIdentity();
   const [state, dispatch] = useReducer(commentsReducer, initialState);
   const [sortOption, setSortOption] = useQueryString(
     "sort",
@@ -86,9 +89,17 @@ const Comments = ({
   }
   return (
     <Card className={classNames(styles.commentAreaContainer, className)}>
+      {!readOnly && !!identityError && (
+        <LoggedInContent>
+          <IdentityMessageError />
+        </LoggedInContent>
+      )}
       {!isSingleThread && !readOnly && (
         <LoggedInContent>
-          <CommentForm onSubmit={handleSubmitComment} />
+          <CommentForm
+            onSubmit={handleSubmitComment}
+            disableSubmit={!!identityError}
+          />
         </LoggedInContent>
       )}
       {readOnly && (
@@ -135,6 +146,7 @@ const Comments = ({
               threadParentID,
               recordType,
               readOnly,
+              identityError,
               ...commentsCtx
             }}
           >
