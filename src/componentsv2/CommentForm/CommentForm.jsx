@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Formik } from "formik";
 import FormikPersist from "src/componentsv2/FormikPersist";
 import { Button, Message } from "pi-ui";
@@ -76,6 +77,13 @@ const CommentForm = ({
       }}
     </Formik>
   );
+};
+
+CommentForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  onCommentSubmitted: PropTypes.func,
+  disableSubmit: PropTypes.bool,
+  persistKey: PropTypes.string
 };
 
 export default CommentForm;

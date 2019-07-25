@@ -1,13 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Text, Icon, classNames } from "pi-ui";
+import { Text, classNames } from "pi-ui";
 import styles from "./Comment.module.css";
 import DateTooltip from "src/componentsv2/DateTooltip";
 import Markdown from "src/componentsv2/Markdown";
 import Join from "src/componentsv2/Join";
 import Link from "src/componentsv2/Link";
+import IconButton from "src/componentsv2/IconButton";
 import LoggedInContent from "src/componentsv2/LoggedInContent";
 import Likes from "src/componentsv2/Likes";
+import CopyToClipboard from "src/componentsv2/CopyToClipboard";
 
 const Comment = ({
   children,
@@ -53,7 +55,11 @@ const Comment = ({
             {author}
           </Link>
           <DateTooltip timestamp={createdAt} placement="bottom">
-            {({ timeAgo }) => <Text color="gray">{timeAgo}</Text>}
+            {({ timeAgo }) => (
+              <Link className={styles.timeAgo} to={permalink} gray>
+                {timeAgo}
+              </Link>
+            )}
           </DateTooltip>
         </Join>
         {!disableLikes && (
@@ -87,9 +93,14 @@ const Comment = ({
             </span>
           )}
         </div>
-        <Link to={permalink}>
-          <Icon type="link" />
-        </Link>
+        <CopyToClipboard
+          value={window.location.origin + permalink}
+          tooltipText="Copy link"
+        >
+          {({ onCopyToClipboard }) => (
+            <IconButton type="link" onClick={onCopyToClipboard} />
+          )}
+        </CopyToClipboard>
       </div>
       {children}
     </div>

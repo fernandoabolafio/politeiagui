@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { Formik } from "formik";
 import { Button, Message, BoxTextInput } from "pi-ui";
@@ -96,6 +97,12 @@ const ProposalForm = ({ initialValues, onSubmit, history, disableSubmit }) => {
       }}
     </Formik>
   );
+};
+
+ProposalForm.propTypes = {
+  initialValues: PropTypes.object,
+  onSubmit: PropTypes.func.isRequired,
+  disableSubmit: PropTypes.bool
 };
 
 export default withRouter(ProposalForm);

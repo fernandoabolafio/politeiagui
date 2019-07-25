@@ -81,6 +81,8 @@ const Comments = ({
   );
 
   function renderCommentLoaders() {
+    const numOfComments =
+      numOfComments < 3 ? numOfComments : NUMBER_OF_LIST_PLACEHOLDERS;
     const contents = [];
     for (let i = 0; i < NUMBER_OF_LIST_PLACEHOLDERS; i++) {
       contents.push(<CommentLoader key={`comment-loader-${i}`} />);
