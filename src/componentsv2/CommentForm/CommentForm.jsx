@@ -11,7 +11,8 @@ const CommentForm = ({
   onSubmit,
   onCommentSubmitted,
   disableSubmit,
-  persistKey
+  persistKey,
+  editorRef
 }) => {
   async function handleSubmit(
     values,
@@ -36,7 +37,7 @@ const CommentForm = ({
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {props => {
+      {formikProps => {
         const {
           values,
           handleBlur,
@@ -45,7 +46,7 @@ const CommentForm = ({
           setFieldValue,
           errors,
           isValid
-        } = props;
+        } = formikProps;
         function handleCommentChange(v) {
           setFieldValue("comment", v);
         }
@@ -61,6 +62,7 @@ const CommentForm = ({
               onChange={handleCommentChange}
               onBlur={handleBlur}
               placeholder={"Write a comment"}
+              textAreaRef={editorRef}
             />
             <Row justify="right" topMarginSize="s">
               <Button

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import styles from "./Comment.module.css";
 import CommentForm from "src/componentsv2/CommentForm";
 import { useComment } from "../hooks";
@@ -29,6 +29,13 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
     userid,
     parentid
   } = comment;
+
+  const formRef = useCallback(node => {
+    if (!!node) {
+      node.focus();
+      node.scrollIntoView({ block: "center", inline: "nearest" });
+    }
+  }, []);
 
   const isRecordAuthor = recordAuthorID === userid;
   const isThreadParent = +parentid === 0 || +commentid === +threadParentID;
@@ -86,7 +93,8 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
     >
       {showReplyForm && (
         <CommentForm
-          persistKey={`replying-to-${commentid}`}
+          editorRef={formRef}
+          persistKey={`replying-to-${commentid}-from-${token}`}
           onSubmit={handleSubmitComment}
           onCommentSubmitted={handleCommentSubmitted}
         />

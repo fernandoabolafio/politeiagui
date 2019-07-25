@@ -81,10 +81,10 @@ const Comments = ({
   );
 
   function renderCommentLoaders() {
-    const numOfComments =
+    const numOfContents =
       numOfComments < 3 ? numOfComments : NUMBER_OF_LIST_PLACEHOLDERS;
     const contents = [];
-    for (let i = 0; i < NUMBER_OF_LIST_PLACEHOLDERS; i++) {
+    for (let i = 0; i < numOfContents; i++) {
       contents.push(<CommentLoader key={`comment-loader-${i}`} />);
     }
     return contents;
@@ -107,7 +107,7 @@ const Comments = ({
         </Or>
         {!isSingleThread && !readOnly && (
           <CommentForm
-            persistKey="comment-form"
+            persistKey={`commenting-on-${recordToken}`}
             onSubmit={handleSubmitComment}
             disableSubmit={!!identityError}
           />
