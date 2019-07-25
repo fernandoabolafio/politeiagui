@@ -49,6 +49,7 @@ const Comments = ({
     numOfComments
   });
 
+  const paywallMissing = paywallEnabled && !isPaid;
   const isSingleThread = !!threadParentID;
 
   function handleSubmitComment(comment) {
@@ -109,7 +110,7 @@ const Comments = ({
           <CommentForm
             persistKey={`commenting-on-${recordToken}`}
             onSubmit={handleSubmitComment}
-            disableSubmit={!!identityError}
+            disableSubmit={!!identityError || paywallMissing}
           />
         )}
       </LoggedInContent>
@@ -154,6 +155,7 @@ const Comments = ({
               recordType,
               readOnly,
               identityError,
+              paywallMissing,
               ...commentsCtx
             }}
           >

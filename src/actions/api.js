@@ -712,7 +712,6 @@ export const onLikeComment = (loggedInAsEmail, token, commentid, action) =>
       .catch(error => {
         dispatch(act.RESET_SYNC_LIKE_COMMENT());
         dispatch(act.RECEIVE_LIKE_COMMENT(null, error));
-        throw error;
       });
   });
 

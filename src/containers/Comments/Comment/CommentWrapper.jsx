@@ -17,7 +17,8 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
     recordType,
     threadParentID,
     readOnly,
-    identityError
+    identityError,
+    paywallMissing
   } = useComment();
   const {
     comment: commentText,
@@ -79,7 +80,7 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
       disableLikesClick={
         !userLoggedIn || loadingLikes || readOnly || identityError
       }
-      disableReply={readOnly || !!identityError}
+      disableReply={readOnly || !!identityError || paywallMissing}
       likesCount={resultvotes}
       likeOption={getCommentLikeOption(commentid)}
       onLike={handleLikeComment}
