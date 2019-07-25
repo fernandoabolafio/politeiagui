@@ -1,5 +1,7 @@
 import orderBy from "lodash/fp/orderBy";
 
+export const NUMBER_OF_LIST_PLACEHOLDERS = 3;
+
 export const commentSortOptions = {
   SORT_BY_TOP: "Top",
   SORT_BY_OLD: "Old",
@@ -24,20 +26,6 @@ export const getSortOptionsForSelect = () =>
   Object.keys(commentSortOptions).map(key =>
     createSelectOptionFromSortOption(commentSortOptions[key])
   );
-
-/** Estimates the number of top level comments for a given total number
- *  of comments.The formula '6 log (0.2 totalComments)' is a more precise
- *  estimative of how many top level comments exists. This formula was
- *  created after analyzing the data from proposals.decred.org.
- * @param {number} totalComments
- * @returns {number} numOfTopLevelComments
- */
-export const estimateNumberOfTopLevelComments = totalComments => {
-  if (totalComments < 7) {
-    return Math.round(totalComments / 2);
-  }
-  return Math.round(6 * Math.log(0.2 * totalComments));
-};
 
 /**
  * Returns a sort function accordingly to the sort option provided

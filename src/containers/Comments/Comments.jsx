@@ -8,14 +8,16 @@ import CommentsListWrapper from "./CommentsList/CommentsListWrapper";
 import CommentLoader from "./Comment/CommentLoader";
 import Link from "src/componentsv2/Link";
 import Select from "src/componentsv2/Select";
+import Or from "src/componentsv2/Or";
 import useQueryString from "src/hooks/useQueryString";
 import {
-  estimateNumberOfTopLevelComments,
   getSortOptionsForSelect,
   createSelectOptionFromSortOption,
-  commentSortOptions
+  commentSortOptions,
+  NUMBER_OF_LIST_PLACEHOLDERS
 } from "./helpers";
 import useIdentity from "src/hooks/useIdentity";
+import usePaywall from "src/hooks/usePaywall";
 import { IdentityMessageError } from "src/componentsv2/IdentityErrorIndicators";
 import { commentsReducer, initialState, actions } from "./commentsReducer";
 
@@ -29,6 +31,7 @@ const Comments = ({
   className
 }) => {
   const [, identityError] = useIdentity();
+  const { isPaid, paywallEnabled } = usePaywall();
   const [state, dispatch] = useReducer(commentsReducer, initialState);
   const [sortOption, setSortOption] = useQueryString(
     "sort",
@@ -78,35 +81,36 @@ const Comments = ({
   );
 
   function renderCommentLoaders() {
-    const numberOfContents = estimateNumberOfTopLevelComments(
-      isSingleThread ? 1 : numOfComments
-    );
     const contents = [];
-    for (let i = 0; i < numberOfContents; i++) {
+    for (let i = 0; i < NUMBER_OF_LIST_PLACEHOLDERS; i++) {
       contents.push(<CommentLoader key={`comment-loader-${i}`} />);
     }
     return contents;
   }
   return (
     <Card className={classNames(styles.commentAreaContainer, className)}>
-      {!readOnly && !!identityError && (
-        <LoggedInContent>
-          <IdentityMessageError />
-        </LoggedInContent>
-      )}
-      {!isSingleThread && !readOnly && (
-        <LoggedInContent>
+      <LoggedInContent>
+        <Or>
+          {readOnly && (
+            <Message kind="blocked" title={"Comments are not allowed"}>
+              {readOnlyReason}
+            </Message>
+          )}
+          {!isPaid && paywallEnabled && (
+            <Message kind="error">
+              You must pay the paywall to submit comments.
+            </Message>
+          )}
+          {!readOnly && !!identityError && <IdentityMessageError />}
+        </Or>
+        {!isSingleThread && !readOnly && (
           <CommentForm
             onSubmit={handleSubmitComment}
             disableSubmit={!!identityError}
           />
-        </LoggedInContent>
-      )}
-      {readOnly && (
-        <Message kind="blocked" title={"Comments are not allowed"}>
-          {readOnlyReason}
-        </Message>
-      )}
+        )}
+      </LoggedInContent>
+
       <div className={classNames("justify-space-between", "margin-top-m")}>
         {!isSingleThread && (
           <H2 className={styles.commentsTitle}>
