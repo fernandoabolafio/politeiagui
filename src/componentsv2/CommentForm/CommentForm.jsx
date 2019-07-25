@@ -1,11 +1,17 @@
 import React from "react";
 import { Formik } from "formik";
+import FormikPersist from "src/componentsv2/FormikPersist";
 import { Button, Message } from "pi-ui";
 import { Row } from "../layout";
 import MarkdownEditor from "src/componentsv2/MarkdownEditor";
 import validationSchema from "./validation";
 
-const CommentForm = ({ onSubmit, onCommentSubmitted, disableSubmit }) => {
+const CommentForm = ({
+  onSubmit,
+  onCommentSubmitted,
+  disableSubmit,
+  persistKey
+}) => {
   async function handleSubmit(
     values,
     { resetForm, setSubmitting, setFieldError }
@@ -64,6 +70,7 @@ const CommentForm = ({ onSubmit, onCommentSubmitted, disableSubmit }) => {
                 Add comment
               </Button>
             </Row>
+            {!!persistKey && <FormikPersist name={persistKey} />}
           </form>
         );
       }}

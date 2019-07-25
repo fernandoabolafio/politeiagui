@@ -105,6 +105,7 @@ const Comments = ({
         </Or>
         {!isSingleThread && !readOnly && (
           <CommentForm
+            persistKey="comment-form"
             onSubmit={handleSubmitComment}
             disableSubmit={!!identityError}
           />

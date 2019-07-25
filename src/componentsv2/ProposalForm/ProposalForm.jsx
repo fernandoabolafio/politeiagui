@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { Formik } from "formik";
-import { Card, Button, Message, BoxTextInput } from "pi-ui";
+import { Button, Message, BoxTextInput } from "pi-ui";
 import { Row } from "../layout";
 import MarkdownEditor from "src/componentsv2/MarkdownEditor";
 import FilesInput from "src/componentsv2/Files/Input";

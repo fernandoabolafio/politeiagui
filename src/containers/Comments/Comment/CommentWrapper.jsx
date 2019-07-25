@@ -86,6 +86,7 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
     >
       {showReplyForm && (
         <CommentForm
+          persistKey={`replying-to-${commentid}`}
           onSubmit={handleSubmitComment}
           onCommentSubmitted={handleCommentSubmitted}
         />
