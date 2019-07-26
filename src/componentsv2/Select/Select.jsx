@@ -12,9 +12,7 @@ const DropdownIndicator = props => {
             "arrowAnchor",
             props.selectProps.menuIsOpen && "open"
           )}
-        >
-          {/* {props.selectProps.menuIsOpen ? "o" : "c"} */}
-        </div>
+        />
       </components.DropdownIndicator>
     )
   );
