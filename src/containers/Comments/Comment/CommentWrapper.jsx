@@ -18,7 +18,8 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
     threadParentID,
     readOnly,
     identityError,
-    paywallMissing
+    paywallMissing,
+    openLoginModal
   } = useComment();
   const {
     comment: commentText,
@@ -63,9 +64,17 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
     setShowReplies(true);
   }
   async function handleLikeComment() {
+    if (!userLoggedIn) {
+      openLoginModal();
+      return;
+    }
     return onLikeComment(commentid, "1");
   }
   function handleDislikeComment() {
+    if (!userLoggedIn) {
+      openLoginModal();
+      return;
+    }
     return onLikeComment(commentid, "-1");
   }
   return (
@@ -78,7 +87,7 @@ const CommentWrapper = ({ comment, children, numOfReplies, ...props }) => {
       highlightAuthor={isRecordAuthor}
       disableLikes={!enableCommentVote}
       disableLikesClick={
-        !userLoggedIn || loadingLikes || readOnly || identityError
+        loadingLikes || readOnly || (userLoggedIn && identityError)
       }
       disableReply={readOnly || !!identityError || paywallMissing}
       likesCount={resultvotes}

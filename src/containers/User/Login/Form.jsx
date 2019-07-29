@@ -1,10 +1,11 @@
 import { Button, Link as UILink, Text, TextInput } from "pi-ui";
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import FormWrapper from "src/componentsv2/FormWrapper";
 import ModalPrivacyPolicy from "src/componentsv2/ModalPrivacyPolicy";
 import { useLogin } from "./hooks";
 
-const LoginForm = () => {
+const LoginForm = ({ hideTitle, onLoggedIn }) => {
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const { onLogin, validationSchema } = useLogin();
 
@@ -13,6 +14,7 @@ const LoginForm = () => {
       await onLogin(values);
       setSubmitting(false);
       resetForm();
+      onLoggedIn && onLoggedIn();
     } catch (e) {
       setSubmitting(false);
       setFieldError("global", e);
@@ -46,7 +48,7 @@ const LoginForm = () => {
           touched
         }) => (
           <Form onSubmit={handleSubmit}>
-            <Title>Log in</Title>
+            {!hideTitle && <Title>Log in</Title>}
             {errors && errors.global && (
               <ErrorMessage>{errors.global.toString()}</ErrorMessage>
             )}
@@ -98,6 +100,11 @@ const LoginForm = () => {
       />
     </>
   );
+};
+
+LoginForm.propTypes = {
+  hideTitle: PropTypes.bool,
+  onLoggedIn: PropTypes.func
 };
 
 export default LoginForm;
