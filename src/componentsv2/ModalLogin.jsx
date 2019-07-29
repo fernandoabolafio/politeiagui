@@ -10,7 +10,7 @@ const ModalLogin = ({ title = "Login", onClose, ...props }) => {
       {...props}
       contentStyle={{ width: "100%" }}
     >
-      <LoginForm onLoggedIn={onClose} hideTitle />
+      <LoginForm onLoggedIn={onClose} hideTitle redirectToPrivacyPolicyRoute />
     </Modal>
   );
 };

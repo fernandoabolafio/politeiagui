@@ -1,11 +1,17 @@
 import { Button, Link as UILink, Text, TextInput } from "pi-ui";
 import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import FormWrapper from "src/componentsv2/FormWrapper";
 import ModalPrivacyPolicy from "src/componentsv2/ModalPrivacyPolicy";
 import { useLogin } from "./hooks";
 
-const LoginForm = ({ hideTitle, onLoggedIn }) => {
+const LoginForm = ({
+  hideTitle,
+  onLoggedIn,
+  redirectToPrivacyPolicyRoute,
+  history
+}) => {
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const { onLogin, validationSchema } = useLogin();
 
@@ -18,6 +24,14 @@ const LoginForm = ({ hideTitle, onLoggedIn }) => {
     } catch (e) {
       setSubmitting(false);
       setFieldError("global", e);
+    }
+  }
+
+  function handleOnPrivacyPolicyClick() {
+    if (redirectToPrivacyPolicyRoute) {
+      history.push("/user/privacy-policy");
+    } else {
+      setShowPrivacyPolicy(true);
     }
   }
 
@@ -78,7 +92,7 @@ const LoginForm = ({ hideTitle, onLoggedIn }) => {
             <Footer>
               <UILink
                 gray
-                onClick={() => setShowPrivacyPolicy(true)}
+                onClick={handleOnPrivacyPolicyClick}
                 customComponent={props => (
                   <Text style={{ cursor: "pointer" }} {...props}>
                     {" "}
@@ -107,4 +121,4 @@ LoginForm.propTypes = {
   onLoggedIn: PropTypes.func
 };
 
-export default LoginForm;
+export default withRouter(LoginForm);
