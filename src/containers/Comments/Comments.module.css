@@ -4,7 +4,7 @@
     margin-bottom: 1rem;
 }
 
-.commentsTitle {
+h2.commentsTitle {
     font-weight: var(--font-weight-regular);
 }
 
