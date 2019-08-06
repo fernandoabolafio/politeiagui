@@ -1,0 +1,98 @@
+import React from "react";
+import { Button } from "pi-ui";
+import {
+  isPublicProposal,
+  isUnreviewedProposal,
+  isAbandonedProposal,
+  isVotingNotAuthorizedProposal,
+  isUnderDiscussionProposal
+} from "./helpers";
+import {
+  useUnvettedProposalActions,
+  usePublicProposalActions
+} from "src/containers/Proposal/Actions";
+import AdminContent from "src/componentsv2/AdminContent";
+
+const UnvettedActions = ({ proposal }) => {
+  if (!useUnvettedProposalActions()) {
+    throw Error(
+      "UnvettedActions requires an UnvettedActionsProvider on a higher level of the component tree. "
+    );
+  }
+
+  const { onCensor, onApprove } = useUnvettedProposalActions();
+
+  const withProposal = fn => () => {
+    fn(proposal);
+  };
+
+  return (
+    isUnreviewedProposal(proposal) && (
+      <AdminContent>
+        <div className="justify-right margin-top-m">
+          <Button
+            onClick={withProposal(onCensor)}
+            className="margin-right-s"
+            kind="secondary"
+          >
+            Report as spam
+          </Button>
+          <Button onClick={withProposal(onApprove)}>Approve</Button>
+        </div>
+      </AdminContent>
+    )
+  );
+};
+
+const PublicActions = ({ proposal }) => {
+  if (!usePublicProposalActions()) {
+    throw Error(
+      "PublicActions requires an PublicActionsProvider on a higher level of the component tree. "
+    );
+  }
+
+  const {
+    onAuthorizeVote,
+    onRevokeVote,
+    onAbandon,
+    onStartVote
+  } = usePublicProposalActions();
+
+  const withProposal = fn => () => {
+    fn(proposal);
+  };
+
+  const isVotingStartAuthorized = !isVotingNotAuthorizedProposal(proposal);
+  return (
+    isUnderDiscussionProposal(proposal) && (
+      <div className="justify-right margin-top-m">
+        {!isVotingStartAuthorized ? (
+          <Button onClick={withProposal(onAuthorizeVote)}>
+            Authorize voting to start
+          </Button>
+        ) : (
+          <Button onClick={withProposal(onRevokeVote)}>
+            Revoke voting authorization
+          </Button>
+        )}
+        <AdminContent>
+          {!isVotingStartAuthorized ? (
+            <Button onClick={withProposal(onAbandon)}>Abandon</Button>
+          ) : (
+            <Button onClick={withProposal(onStartVote)}>Start Vote</Button>
+          )}
+        </AdminContent>
+      </div>
+    )
+  );
+};
+
+const ProposalActions = ({ proposal }) => {
+  return isPublicProposal(proposal) || isAbandonedProposal(proposal) ? (
+    <PublicActions proposal={proposal} />
+  ) : (
+    <UnvettedActions proposal={proposal} />
+  );
+};
+
+export default ProposalActions;
