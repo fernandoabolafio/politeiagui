@@ -6,13 +6,14 @@ import { Button, Message, BoxTextInput } from "pi-ui";
 import { Row } from "../layout";
 import MarkdownEditor from "src/componentsv2/MarkdownEditor";
 import FilesInput from "src/componentsv2/Files/Input";
+import ThumbnailGrid from "src/componentsv2/Files/Thumbnail";
 import AttachFileButton from "src/componentsv2/AttachFileButton";
 import { useProposalForm } from "./hooks";
 import DraftSaver from "./DraftSaver";
 
 const ProposalForm = ({ initialValues, onSubmit, history, disableSubmit }) => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const { validationSchema } = useProposalForm();
+  const { validationSchema, policy } = useProposalForm();
   async function handleSubmit(
     values,
     { resetForm, setSubmitting, setFieldError }
@@ -56,13 +57,24 @@ const ProposalForm = ({ initialValues, onSubmit, history, disableSubmit }) => {
         function handleDescriptionChange(v) {
           setFieldValue("description", v);
         }
-        function handleFilesChange(v) {
+        function handleFilesChange(v, e) {
+          e && setFieldValue("filesLengthLimitError", e);
           setFieldValue("files", v);
+        }
+        function handleFileRemoval(v) {
+          const fs = values.files.filter(f => f.payload !== v.payload);
+          if (fs.length <= policy.maximages) {
+            setFieldValue("filesLengthLimitError", null);
+          }
+          setFieldValue("files", fs);
         }
         return (
           <form onSubmit={handleSubmit}>
             {errors && errors.global && (
               <Message kind="error">{errors.global.toString()}</Message>
+            )}
+            {values && values.filesLengthLimitError && (
+              <Message kind="warning">{values.filesLengthLimitError}</Message>
             )}
             <BoxTextInput
               placeholder="Proposal name"
@@ -79,17 +91,27 @@ const ProposalForm = ({ initialValues, onSubmit, history, disableSubmit }) => {
               onChange={handleDescriptionChange}
               onBlur={handleBlur}
               placeholder={"Write your proposal"}
+              error={touched.name && errors.name}
               filesInput={
-                <FilesInput value={values.files} onChange={handleFilesChange}>
+                <FilesInput
+                  value={values.files}
+                  onChange={handleFilesChange}
+                  policy={policy}
+                >
                   <AttachFileButton type="button" />
                 </FilesInput>
               }
+            />
+            <ThumbnailGrid
+              value={values.files}
+              onClick={handleFileRemoval}
+              errors={errors}
             />
             <Row justify="right" topMarginSize="s">
               <DraftSaver submitSuccess={submitSuccess} />
               <Button
                 type="submit"
-                kind={!isValid && disableSubmit ? "disabled" : "primary"}
+                kind={!isValid || disableSubmit ? "disabled" : "primary"}
                 loading={isSubmitting}
               >
                 Submit

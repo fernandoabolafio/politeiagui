@@ -20,6 +20,7 @@ import LoggedInContent from "src/componentsv2/LoggedInContent";
 import VotesCount from "./VotesCount";
 import DownloadComments from "src/containers/Comments/Download";
 import ProposalActions from "./ProposalActions";
+import ThumbnailGrid from "../Files/Thumbnail";
 
 const Proposal = ({ proposal, extended, children }) => {
   const {
@@ -177,6 +178,11 @@ const Proposal = ({ proposal, extended, children }) => {
                   url={`/proposal/${proposalToken}?scrollToComments=true`}
                 />
                 <GithubLink token={proposalToken} />
+              </Row>
+            )}
+            {extended && files.length > 1 && (
+              <Row className={styles.filesRow} justify="left" topMarginSize="s">
+                <ThumbnailGrid value={files} viewOnly={true} />
               </Row>
             )}
             {extended && (
