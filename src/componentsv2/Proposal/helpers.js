@@ -15,7 +15,7 @@ import { getTextFromIndexMd } from "src/helpers";
 
 export const getMarkdownContent = files => {
   const markdownFile = files.find(f => f.name === "index.md");
-  return getTextFromIndexMd(markdownFile);
+  return markdownFile ? getTextFromIndexMd(markdownFile) : "";
 };
 
 /**
