@@ -27,6 +27,7 @@ export const getStatusBarData = voteSummary => {
 };
 
 export const getProposalStatusTagProps = (proposal, voteSummary) => {
+  console.log(voteSummary);
   if (isPublicProposal(proposal) && !!voteSummary) {
     switch (voteSummary.status) {
       case PROPOSAL_VOTING_NOT_AUTHORIZED:
