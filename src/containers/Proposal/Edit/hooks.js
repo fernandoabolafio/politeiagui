@@ -1,12 +1,9 @@
 import * as act from "src/actions";
-import { useRedux } from "src/redux";
+import { useAction } from "src/redux";
+import { useLoaderContext } from "src/Appv2/Loader";
 
-const mapStateToProps = {};
-
-const mapDispatchToProps = {
-  onEditProposal: act.onEditProposal
-};
-
-export function useEditProposal(ownProps) {
-  return useRedux(ownProps, mapStateToProps, mapDispatchToProps);
+export function useEditProposal() {
+  const onEditProposal = useAction(act.onEditProposalV2);
+  const { currentUser } = useLoaderContext();
+  return { onEditProposal, currentUser };
 }
